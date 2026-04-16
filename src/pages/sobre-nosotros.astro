@@ -12,52 +12,34 @@ const stats = [
 
 const values = [
   {
-    icon: '🗺️',
+    num: '01',
     title: 'Rutas probadas, no copiadas',
     text: 'Cada itinerario que publico lo he rodado metro a metro. Sé dónde hay una fuente operativa, qué bar abre el domingo por la mañana y qué puerto conviene afrontar a primera hora.',
   },
   {
-    icon: '🌿',
+    num: '02',
     title: 'Cicloturismo con potencial',
     text: 'Xàtiva tiene todo lo que un destino cicloturista puede ofrecer: clima, orografía, patrimonio, gastronomía y carreteras tranquilas. Falta ordenarlo y contarlo bien. Esa es la misión.',
   },
   {
-    icon: '📍',
+    num: '03',
     title: 'Conocimiento local',
     text: 'No hablo de oídas. Vivo aquí, como arròs al forn habitualmente, subo al castillo al amanecer y sé por qué el retrato de Felipe V sigue cabeza abajo en el Almodí.',
   },
   {
-    icon: '🤝',
+    num: '04',
     title: 'Proyecto abierto',
     text: 'Esta web crece con quien la usa. Si echas en falta una ruta, un taller o un bar bike-friendly, escríbeme y lo incorporo. La comunidad ciclista local está invitada a colaborar.',
   },
 ];
 
 const offerings = [
-  {
-    title: 'Rutas con GPX',
-    text: 'Mapas, desnivel, duración, dificultad y tracks descargables compatibles con Wikiloc, Komoot y Strava.',
-  },
-  {
-    title: 'Guía gastronómica',
-    text: 'Restaurantes, bares de pueblo y obradores históricos donde comer de verdad: arròs al forn, arnadí, moixavena.',
-  },
-  {
-    title: 'Alojamiento bike-friendly',
-    text: 'Selección de hoteles, casas rurales y apartamentos adaptados a ciclistas en Xàtiva y comarca.',
-  },
-  {
-    title: 'Cultura y patrimonio',
-    text: 'El castillo, la Seu, el Museu de l’Almodí, los Borgia: lo que hay que parar a ver entre pedalada y pedalada.',
-  },
-  {
-    title: 'Consejos prácticos',
-    text: 'Mejores épocas, mecánica básica, talleres de bici en Xàtiva, puntos de agua, seguridad vial y preparación.',
-  },
-  {
-    title: 'Eventos y pruebas',
-    text: 'Volta a la Comunitat Valenciana, Trofeo de Velocidad de la Fira (desde 1951), concentraciones y marchas locales.',
-  },
+  { title: 'Rutas con GPX', text: 'Mapas, desnivel, duración, dificultad y tracks descargables compatibles con Wikiloc, Komoot y Strava.' },
+  { title: 'Guía gastronómica', text: 'Restaurantes, bares de pueblo y obradores históricos donde comer de verdad: arròs al forn, arnadí, moixavena.' },
+  { title: 'Alojamiento', text: 'Selección de hoteles, casas rurales y apartamentos adaptados a ciclistas en Xàtiva y comarca.' },
+  { title: 'Cultura y patrimonio', text: 'El castillo, la Seu, el Museu de l’Almodí, los Borgia: lo que hay que parar a ver entre pedalada y pedalada.' },
+  { title: 'Consejos prácticos', text: 'Mejores épocas, mecánica básica, talleres de bici en Xàtiva, puntos de agua, seguridad vial y preparación.' },
+  { title: 'Eventos y pruebas', text: 'Volta a la Comunitat Valenciana, concentraciones invernales, grupetas locales y marchas populares.' },
 ];
 ---
 
@@ -65,213 +47,214 @@ const offerings = [
   <Header />
 
   <main class="flex-1 bg-white">
-    <!-- Hero -->
-    <section class="relative overflow-hidden">
-      <div class="absolute inset-0 bg-gradient-to-br from-emerald-600 via-teal-600 to-sky-700"></div>
-      <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 20% 30%, white 1px, transparent 1px), radial-gradient(circle at 80% 70%, white 1px, transparent 1px); background-size: 40px 40px;"></div>
+    <!-- HERO editorial con foto panorámica -->
+    <section class="relative overflow-hidden bg-stone-900">
+      <img
+        src="/images/blog/xativa-panoramic.jpg"
+        alt="Vista panorámica de Xàtiva"
+        class="absolute inset-0 w-full h-full object-cover opacity-50"
+      />
+      <div class="absolute inset-0 bg-gradient-to-b from-stone-900/50 via-stone-900/30 to-stone-900/70"></div>
 
-      <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 text-center">
-        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-sm text-white/90 text-xs font-semibold uppercase tracking-[0.2em] mb-6">
-          🚴 Paraíso Ciclista
+      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
+        <div class="max-w-3xl">
+          <p class="text-[11px] uppercase tracking-[0.35em] font-semibold text-white/80 mb-6">
+            El proyecto · Paraíso Ciclista
+          </p>
+          <h1 class="font-serif text-white font-light leading-[0.98] tracking-tight text-5xl md:text-6xl lg:text-7xl">
+            La guía <em class="italic font-normal">honesta</em><br />
+            de Xàtiva para<br />
+            quien rueda
+          </h1>
+          <p class="mt-8 text-lg md:text-xl text-white/85 max-w-xl leading-relaxed">
+            Un proyecto personal e independiente para poner en valor el enorme potencial cicloturista de Xàtiva y su comarca. Rutas probadas, consejos reales y una mirada auténtica sobre una tierra con una tradición ciclista profunda.
+          </p>
         </div>
-        <h1 class="text-4xl md:text-6xl font-black text-white leading-[1.05] drop-shadow-lg">
-          La guía honesta de Xàtiva<br />para quien rueda
-        </h1>
-        <p class="mt-6 text-lg md:text-xl text-white/85 max-w-2xl mx-auto leading-relaxed">
-          Un proyecto personal e independiente para poner en valor el enorme potencial cicloturista de Xàtiva y su comarca. Rutas probadas, consejos reales y una mirada auténtica sobre una tierra con una tradición ciclista profunda.
-        </p>
+      </div>
+
+      <!-- Stats strip -->
+      <div class="relative border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="grid grid-cols-2 md:grid-cols-4 divide-x divide-white/10">
+            {stats.map((s) => (
+              <div class="py-5 md:py-6 px-2 md:px-6">
+                <div class="font-serif text-2xl md:text-3xl font-light text-white">{s.value}</div>
+                <div class="mt-1 text-[10px] uppercase tracking-[0.2em] text-white/70">{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- Stats -->
-    <section class="bg-slate-50 border-b border-slate-200">
-      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {stats.map((s) => (
-            <div class="text-center">
-              <div class="text-3xl md:text-4xl font-black bg-gradient-to-br from-emerald-600 to-sky-600 bg-clip-text text-transparent">
-                {s.value}
+    <!-- POR QUÉ EXISTE -->
+    <section class="border-b border-stone-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+          <div class="lg:col-span-5">
+            <p class="text-[11px] uppercase tracking-[0.3em] font-semibold text-stone-500 mb-4">
+              Capítulo · 01
+            </p>
+            <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl font-light text-stone-900 leading-[1.05] tracking-tight">
+              ¿Por qué<br />
+              <em class="italic font-normal">existe</em> esta web?
+            </h2>
+          </div>
+          <div class="lg:col-span-7 space-y-5 text-stone-700 text-lg leading-relaxed">
+            <p>
+              Paraíso Ciclista es un proyecto <strong class="text-stone-900">personal</strong>. Detrás no hay una empresa ni un colectivo: hay una persona, aficionada al ciclismo, que vive en Xàtiva y tiene una convicción clara: <strong class="text-stone-900">esta comarca tiene un potencial cicloturista enorme y aún por poner en valor</strong>.
+            </p>
+            <p>
+              Xàtiva no necesita inventarse como destino ciclista; ya lo es desde hace generaciones. Los clubes locales llevan décadas formando ciclistas, los sábados por la mañana los puertos de la Vall d’Albaida y del Canal de Navarrés se llenan de grupetas, y en los bares de los pueblos los maillots y los cafés conviven con una naturalidad que solo da la costumbre. Aquí se pedalea mucho y bien; solo faltaba contarlo.
+            </p>
+            <p>
+              Pero cuando buscaba información online para planificar rutas, recomendar la zona a amigos de fuera o explicar por qué merece la pena venir, solo encontraba guías copiadas unas de otras, datos desactualizados, rutas que nadie había pedaleado y recomendaciones gastronómicas genéricas. Xàtiva merece una guía mejor.
+            </p>
+            <p>
+              Esta es mi aportación: una guía honesta, rodada, verificada y con memoria local. Sin patrocinios de marcas, ayuntamientos ni hoteles. Si recomiendo un restaurante es porque he comido allí; si publico una ruta es porque la he rodado.
+            </p>
+            <p>
+              El objetivo a medio plazo es sencillo pero ambicioso: que quien busque "cicloturismo en la Comunitat Valenciana" encuentre Xàtiva entre las primeras respuestas, con razones sobradas para venir.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CÓMO TRABAJO -->
+    <section class="border-b border-stone-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+        <div class="mb-14">
+          <p class="text-[11px] uppercase tracking-[0.3em] font-semibold text-stone-500 mb-4">
+            Capítulo · 02
+          </p>
+          <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl font-light text-stone-900 leading-[1.05] tracking-tight max-w-3xl">
+            Cuatro principios<br />
+            <em class="italic font-normal">que orientan</em> esta guía
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-0 border-t border-stone-200">
+          {values.map((v, i) => (
+            <div class={`p-8 md:p-10 border-b border-stone-200 ${i % 2 === 0 ? 'md:border-r' : ''}`}>
+              <div class="flex items-start gap-6">
+                <span class="font-serif text-2xl md:text-3xl font-light text-stone-300 leading-none shrink-0">
+                  {v.num}
+                </span>
+                <div>
+                  <h3 class="text-xl md:text-2xl font-bold text-stone-900 leading-tight mb-3">
+                    {v.title}
+                  </h3>
+                  <p class="text-stone-600 leading-relaxed">{v.text}</p>
+                </div>
               </div>
-              <div class="mt-1 text-sm text-slate-600 font-medium">{s.label}</div>
             </div>
           ))}
         </div>
       </div>
     </section>
 
-    <!-- Historia / Por qué -->
-    <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
-      <div class="prose prose-lg prose-slate max-w-none">
-        <h2 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tight !mt-0">
-          ¿Por qué existe esta web?
-        </h2>
-        <p class="text-slate-600 leading-relaxed">
-          Paraíso Ciclista es un proyecto <strong>personal</strong>. Detrás no hay una empresa ni un colectivo: hay una persona, aficionada al ciclismo, que vive en Xàtiva y tiene una convicción clara: <strong>esta comarca tiene un potencial cicloturista enorme y aún por poner en valor</strong>.
-        </p>
-        <p class="text-slate-600 leading-relaxed">
-          Xàtiva no necesita inventarse como destino ciclista; ya lo es desde hace generaciones. Los clubes locales llevan décadas formando ciclistas, los sábados por la mañana los puertos de la Vall d’Albaida y del Canal de Navarrés se llenan de grupetas, y en los bares de los pueblos los maillots y los cafés conviven con una naturalidad que solo da la costumbre. Aquí se pedalea mucho y bien; solo faltaba contarlo.
-        </p>
-        <p class="text-slate-600 leading-relaxed">
-          Pero cuando buscaba información online para planificar rutas, recomendar la zona a amigos de fuera o explicar por qué merece la pena venir, solo encontraba guías copiadas unas de otras, datos desactualizados, rutas que nadie había pedaleado y recomendaciones gastronómicas genéricas. Xàtiva merece una guía mejor.
-        </p>
-        <p class="text-slate-600 leading-relaxed">
-          Esta es mi aportación: una guía honesta, rodada, verificada y con memoria local. Sin patrocinios de marcas, ayuntamientos ni hoteles. Si recomiendo un restaurante es porque he comido allí; si publico una ruta es porque la he rodado. La independencia es lo único que hace útil una guía turística.
-        </p>
-        <p class="text-slate-600 leading-relaxed">
-          El objetivo a medio plazo es sencillo pero ambicioso: que quien busque "cicloturismo en la Comunitat Valenciana" encuentre Xàtiva entre las primeras respuestas, con razones sobradas para venir. Si te apasiona el ciclismo y la zona, estás invitado a sumar.
-        </p>
+    <!-- TRADICIÓN CICLISTA -->
+    <section class="border-b border-stone-200 bg-stone-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+          <div class="lg:col-span-5">
+            <p class="text-[11px] uppercase tracking-[0.3em] font-semibold text-stone-500 mb-4">
+              Capítulo · 03
+            </p>
+            <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl font-light text-stone-900 leading-[1.05] tracking-tight">
+              Xàtiva es,<br />
+              históricamente,<br />
+              <em class="italic font-normal">tierra de ciclistas</em>
+            </h2>
+            <p class="mt-6 text-lg text-stone-600 leading-relaxed max-w-md">
+              Aquí el ciclismo no es una moda: es costumbre. Décadas de clubes locales, aficionados que suben al castillo en bici antes del desayuno y pelotones de fin de semana que dominan las carreteras de la comarca.
+            </p>
+          </div>
+
+          <div class="lg:col-span-7 grid grid-cols-1 md:grid-cols-3 gap-0 border-t border-stone-200">
+            <div class="p-6 md:p-7 border-b md:border-b-0 md:border-r border-stone-200 bg-white">
+              <div class="font-serif text-4xl font-light text-stone-900 leading-none">Clubes</div>
+              <div class="mt-4 text-[11px] uppercase tracking-[0.2em] font-semibold text-stone-500">Cantera activa</div>
+              <p class="mt-3 text-sm text-stone-600 leading-relaxed">
+                Xàtiva, Canals, Genovés, Ontinyent mantienen clubes con décadas de historia y escuelas formativas.
+              </p>
+            </div>
+            <div class="p-6 md:p-7 border-b md:border-b-0 md:border-r border-stone-200 bg-white">
+              <div class="font-serif text-4xl font-light text-stone-900 leading-none">Volta</div>
+              <div class="mt-4 text-[11px] uppercase tracking-[0.2em] font-semibold text-stone-500">Comunitat Valenciana</div>
+              <p class="mt-3 text-sm text-stone-600 leading-relaxed">
+                La Volta CV pasa regularmente por estas carreteras: tramos probados al máximo nivel profesional cada febrero.
+              </p>
+            </div>
+            <div class="p-6 md:p-7 bg-white">
+              <div class="font-serif text-4xl font-light text-stone-900 leading-none">Grupetas</div>
+              <div class="mt-4 text-[11px] uppercase tracking-[0.2em] font-semibold text-stone-500">Ciclismo popular</div>
+              <p class="mt-3 text-sm text-stone-600 leading-relaxed">
+                Cada sábado y domingo salen decenas de grupetas por la Costera, la Vall d’Albaida y el Canal de Navarrés.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- Valores -->
-    <section class="bg-slate-50">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
-        <div class="max-w-2xl mb-12">
-          <h2 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">Cómo trabajamos</h2>
-          <p class="mt-3 text-slate-600 text-lg">
-            Cuatro principios que orientan todo lo que publicamos aquí.
+    <!-- QUÉ VAS A ENCONTRAR -->
+    <section class="border-b border-stone-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+        <div class="mb-14">
+          <p class="text-[11px] uppercase tracking-[0.3em] font-semibold text-stone-500 mb-4">
+            Capítulo · 04
           </p>
+          <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl font-light text-stone-900 leading-[1.05] tracking-tight max-w-3xl">
+            Qué vas a <em class="italic font-normal">encontrar</em>
+          </h2>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {values.map((v) => (
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-              <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-100 to-sky-100 flex items-center justify-center text-2xl mb-4">
-                {v.icon}
-              </div>
-              <h3 class="text-xl font-bold text-slate-900 mb-2">{v.title}</h3>
-              <p class="text-slate-600 leading-relaxed">{v.text}</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 border-t border-l border-stone-200">
+          {offerings.map((o, i) => (
+            <div class="p-8 md:p-10 border-r border-b border-stone-200 relative">
+              <span class="font-serif text-2xl font-light text-stone-300 absolute top-6 right-6">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <h3 class="text-lg md:text-xl font-bold text-stone-900 mb-3 pr-10">{o.title}</h3>
+              <p class="text-sm text-stone-600 leading-relaxed">{o.text}</p>
             </div>
           ))}
         </div>
       </div>
     </section>
 
-    <!-- Tradición ciclista de la zona -->
-    <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
-      <div class="bg-gradient-to-br from-amber-50 via-white to-orange-50 rounded-3xl border border-amber-100 p-8 md:p-12">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-semibold uppercase tracking-[0.2em] mb-5">
-          🏆 Tradición ciclista
-        </div>
-        <h2 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
-          Xàtiva es, históricamente, una tierra de ciclistas
-        </h2>
-        <p class="mt-4 text-slate-600 text-lg leading-relaxed max-w-3xl">
-          Aquí el ciclismo no es una moda: es costumbre. Son décadas de clubes locales, de carreras en el asfalto de las calles del centro, de aficionados que suben al castillo en bici antes del desayuno y de pelotones de fin de semana que dominan las carreteras de la comarca.
-        </p>
-
-        <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-            <div class="text-3xl font-black text-emerald-600">Clubes</div>
-            <div class="mt-2 font-bold text-slate-900">Cantera activa</div>
-            <p class="mt-2 text-sm text-slate-600 leading-relaxed">
-              Xàtiva y los pueblos vecinos (Canals, Genovés, Ontinyent…) mantienen clubes ciclistas con décadas de historia y escuelas formativas activas.
-            </p>
-          </div>
-          <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-            <div class="text-3xl font-black text-amber-600">Volta</div>
-            <div class="mt-2 font-bold text-slate-900">Comunitat Valenciana</div>
-            <p class="mt-2 text-sm text-slate-600 leading-relaxed">
-              La Volta CV pasa regularmente por estas carreteras. Son tramos probados al máximo nivel profesional cada febrero.
-            </p>
-          </div>
-          <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-            <div class="text-3xl font-black text-sky-600">Grupetas</div>
-            <div class="mt-2 font-bold text-slate-900">Ciclismo popular</div>
-            <p class="mt-2 text-sm text-slate-600 leading-relaxed">
-              Cada sábado y domingo salen decenas de grupetas por la Costera, la Vall d’Albaida y el Canal de Navarrés. La afición es masiva y constante.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Qué encontrarás -->
-    <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
-      <div class="max-w-2xl mb-12">
-        <h2 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">Qué vas a encontrar</h2>
-        <p class="mt-3 text-slate-600 text-lg">
-          Seis bloques de contenido que cubren todo lo que necesitas para planificar tu visita ciclista a Xàtiva.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {offerings.map((o, i) => (
-          <div class="relative bg-gradient-to-br from-white to-slate-50 rounded-2xl border border-slate-200 p-6 hover:border-emerald-300 hover:shadow-lg transition-all">
-            <div class="absolute top-4 right-5 text-5xl font-black text-emerald-100 leading-none">
-              {String(i + 1).padStart(2, '0')}
-            </div>
-            <h3 class="relative text-lg font-bold text-slate-900 mb-2 pr-12">{o.title}</h3>
-            <p class="relative text-sm text-slate-600 leading-relaxed">{o.text}</p>
-          </div>
-        ))}
-      </div>
-    </section>
-
-    <!-- Xàtiva -->
-    <section class="relative overflow-hidden bg-slate-900">
-      <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 30% 20%, #10b981 1px, transparent 1px), radial-gradient(circle at 70% 80%, #0ea5e9 1px, transparent 1px); background-size: 50px 50px;"></div>
-
-      <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-emerald-300 text-xs font-semibold uppercase tracking-[0.2em] mb-6">
-          🗺️ Ubicación privilegiada
-        </div>
-        <h2 class="text-3xl md:text-4xl font-black text-white tracking-tight">
-          Xàtiva, el mejor sitio para rodar en la Comunitat Valenciana
-        </h2>
-        <div class="mt-6 space-y-4 text-slate-300 leading-relaxed text-lg">
-          <p>
-            A 50 minutos de Valencia y a poco más de una hora de Alicante, Xàtiva es bisagra entre la costa y las sierras prelitorales. Desde el mismo punto de partida puedes elegir un día de llaneo por la huerta, un encadenado de puertos por la Vall d’Albaida o una escapada al mar por la Valldigna.
+    <!-- CONTACTO -->
+    <section>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+        <div class="max-w-3xl">
+          <p class="text-[11px] uppercase tracking-[0.3em] font-semibold text-stone-500 mb-4">
+            Colabora · Contacto
           </p>
-          <p>
-            A ese privilegio geográfico se suma el clima (más de 300 días de sol al año), una red de carreteras secundarias tranquilas y una cultura local que lleva décadas acogiendo pelotones: no eres un extraño, eres un visitante bienvenido.
+          <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl font-light text-stone-900 leading-[1.05] tracking-tight">
+            ¿Me ayudas<br />
+            a <em class="italic font-normal">mejorar</em>?
+          </h2>
+          <p class="mt-6 text-lg md:text-xl text-stone-600 leading-relaxed max-w-2xl">
+            ¿Conoces una ruta que no está aquí? ¿Un bar ciclista imprescindible? ¿Has detectado un error? ¿Quieres colaborar con contenido propio? Escríbeme: esta web se hace mejor con la comunidad ciclista local.
           </p>
-        </div>
 
-        <div class="mt-10 grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div class="bg-white/5 border border-white/10 rounded-xl p-4">
-            <div class="text-emerald-400 text-xs font-semibold uppercase tracking-wider">Norte</div>
-            <div class="mt-1 text-white font-bold">La Ribera y costa</div>
+          <div class="mt-10 flex flex-wrap items-center gap-4">
+            <a
+              href="mailto:info@paraisociclista.com"
+              class="inline-flex items-center gap-3 px-6 py-3.5 bg-stone-900 text-white font-semibold text-sm uppercase tracking-wider hover:bg-stone-800 transition-colors"
+            >
+              info@paraisociclista.com
+              <span aria-hidden="true">→</span>
+            </a>
+            <a
+              href="/rutas"
+              class="inline-flex items-center gap-3 px-6 py-3.5 text-stone-900 font-semibold text-sm uppercase tracking-wider border border-stone-300 hover:bg-stone-100 transition-colors"
+            >
+              Ver rutas
+            </a>
           </div>
-          <div class="bg-white/5 border border-white/10 rounded-xl p-4">
-            <div class="text-emerald-400 text-xs font-semibold uppercase tracking-wider">Sur</div>
-            <div class="mt-1 text-white font-bold">Vall d’Albaida</div>
-          </div>
-          <div class="bg-white/5 border border-white/10 rounded-xl p-4">
-            <div class="text-emerald-400 text-xs font-semibold uppercase tracking-wider">Este</div>
-            <div class="mt-1 text-white font-bold">Mondúver y mar</div>
-          </div>
-          <div class="bg-white/5 border border-white/10 rounded-xl p-4">
-            <div class="text-emerald-400 text-xs font-semibold uppercase tracking-wider">Oeste</div>
-            <div class="mt-1 text-white font-bold">Canal de Navarrés</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Contacto -->
-    <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
-      <div class="bg-gradient-to-br from-emerald-50 via-white to-sky-50 rounded-3xl border border-emerald-100 p-8 md:p-12 text-center">
-        <div class="text-5xl mb-4">✉️</div>
-        <h2 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
-          ¿Me ayudas a mejorar?
-        </h2>
-        <p class="mt-4 text-slate-600 text-lg max-w-2xl mx-auto">
-          ¿Conoces una ruta que no está aquí? ¿Un bar ciclista imprescindible? ¿Has detectado un error? ¿Quieres colaborar con contenido propio? Escríbeme: esta web se hace mejor con la comunidad ciclista local.
-        </p>
-        <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
-          <a
-            href="mailto:info@paraisociclista.com"
-            class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-semibold shadow-lg shadow-emerald-500/30 hover:shadow-xl hover:shadow-emerald-500/40 transition-all"
-          >
-            info@paraisociclista.com
-          </a>
-          <a
-            href="/rutas"
-            class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white border border-slate-200 text-slate-700 font-semibold hover:bg-slate-50 transition-colors"
-          >
-            Ver rutas →
-          </a>
         </div>
       </div>
     </section>
