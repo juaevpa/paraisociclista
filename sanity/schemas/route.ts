@@ -77,12 +77,12 @@ export default defineType({
     defineField({
       name: 'startPoint',
       title: 'Punto de inicio',
-      type: 'string',
+      type: 'geopoint',
     }),
     defineField({
       name: 'endPoint',
       title: 'Punto final',
-      type: 'string',
+      type: 'geopoint',
     }),
     defineField({
       name: 'featured',

@@ -103,7 +103,7 @@ const diff = route.difficulty
             </div>
           </div>
 
-          <!-- Mapa -->
+          <!-- Mapa embed (Wikiloc u otro) -->
           {route.mapEmbed && (
             <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
               <div class="px-6 py-4 border-b border-slate-100">
@@ -111,7 +111,7 @@ const diff = route.difficulty
                   🗺️ Mapa de la Ruta
                 </h2>
               </div>
-              <div class="aspect-video" set:html={route.mapEmbed}></div>
+              <div class="map-embed-wrapper" set:html={route.mapEmbed}></div>
             </div>
           )}
 
@@ -193,30 +193,6 @@ const diff = route.difficulty
                 </div>
               )}
 
-              {route.startPoint && (
-                <div class="flex items-center gap-4">
-                  <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-teal-100 flex items-center justify-center">
-                    <span class="text-2xl">📍</span>
-                  </div>
-                  <div>
-                    <p class="text-sm text-slate-500">Punto de inicio</p>
-                    <p class="text-lg font-semibold text-slate-900">{route.startPoint}</p>
-                  </div>
-                </div>
-              )}
-
-              {route.endPoint && (
-                <div class="flex items-center gap-4">
-                  <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-rose-100 flex items-center justify-center">
-                    <span class="text-2xl">🏁</span>
-                  </div>
-                  <div>
-                    <p class="text-sm text-slate-500">Punto final</p>
-                    <p class="text-lg font-semibold text-slate-900">{route.endPoint}</p>
-                  </div>
-                </div>
-              )}
-
               {route.featured && (
                 <div class="flex items-center gap-4">
                   <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-yellow-100 flex items-center justify-center">
@@ -252,3 +228,20 @@ const diff = route.difficulty
 
   <Footer />
 </Layout>
+
+<style is:global>
+  .map-embed-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+  }
+  .map-embed-wrapper iframe,
+  .map-embed-wrapper embed,
+  .map-embed-wrapper object {
+    position: absolute;
+    inset: 0;
+    width: 100% !important;
+    height: 100% !important;
+    border: 0;
+  }
+</style>
