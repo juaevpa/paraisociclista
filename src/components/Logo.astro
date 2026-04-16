@@ -1,0 +1,33 @@
+---
+interface Props {
+  theme?: 'light' | 'dark';
+  compact?: boolean;
+}
+
+const { theme = 'light', compact = false } = Astro.props;
+
+const isDark = theme === 'dark';
+const textMain = isDark ? 'text-white' : 'text-stone-900';
+const textSub = isDark ? 'text-white/60' : 'text-stone-500';
+const markBg = isDark ? 'bg-white text-stone-900' : 'bg-stone-900 text-white';
+---
+
+<a href="/" class="group inline-flex items-center gap-3" aria-label="Paraíso Ciclista — inicio">
+  <!-- Monograma: "Pc" en serif, dentro de un cuadrado -->
+  <span class={`relative inline-flex items-center justify-center w-10 h-10 ${markBg} transition-transform duration-300 group-hover:-rotate-3`}>
+    <span class="font-serif italic font-light text-xl leading-none translate-y-[-1px]">
+      Pc
+    </span>
+  </span>
+
+  {!compact && (
+    <span class="flex flex-col leading-none">
+      <span class={`font-serif text-lg md:text-xl font-light tracking-tight ${textMain}`}>
+        Paraíso <em class="italic">Ciclista</em>
+      </span>
+      <span class={`text-[9px] md:text-[10px] uppercase tracking-[0.28em] font-semibold mt-1 ${textSub}`}>
+        Xàtiva · Cicloturismo
+      </span>
+    </span>
+  )}
+</a>

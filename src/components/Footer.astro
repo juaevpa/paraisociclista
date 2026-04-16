@@ -1,77 +1,71 @@
 ---
+import Logo from './Logo.astro';
+
 const quickLinks = [
   { href: '/rutas', label: 'Rutas' },
-  { href: '/explorar', label: 'Explorar Xàtiva' },
-  { href: '/blog', label: 'Blog' },
+  { href: '/explorar', label: 'Explorar' },
+  { href: '/restaurantes', label: 'Restaurantes' },
+  { href: '/alojamiento', label: 'Alojamiento' },
+  { href: '/blog', label: 'Diario' },
   { href: '/sobre-nosotros', label: 'Sobre nosotros' },
 ];
 
 const currentYear = new Date().getFullYear();
 ---
 
-<footer class="bg-slate-900 text-white mt-auto">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <!-- Logo y descripción -->
-      <div class="space-y-4">
-        <a href="/" class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-sky-500 flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 256 256">
-              <path d="M164.38,181.1a52,52,0,1,1-72.76,0l13.21-30.06A44,44,0,1,0,128,88a44.05,44.05,0,0,0-43.17,35.44L61.57,182.26a4,4,0,0,1-7.14,0L31.17,123.44a44,44,0,1,0,0,52.12l13.21,30.06a52,52,0,1,1,72.76,0l-13.21-30.06a44,44,0,1,0,0-52.12l13.21,30.06a52,52,0,0,1,47.24-41.5l13.21-30.06a52,52,0,1,1,0-52.12Z"/>
-            </svg>
-          </div>
-          <span class="text-xl font-bold">Paraíso Ciclista</span>
-        </a>
-        <p class="text-slate-400 text-sm leading-relaxed">
-          Descubre las mejores rutas ciclistas en Xàtiva y sus alrededores. 
-          Explora la historia, gastronomía y naturaleza de nuestra región.
+<footer class="bg-stone-950 text-white mt-auto">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-10">
+      <!-- Logo + descripción -->
+      <div class="md:col-span-5">
+        <Logo theme="dark" />
+        <p class="mt-6 text-stone-400 text-base leading-relaxed max-w-md">
+          Una guía independiente para descubrir Xàtiva y su comarca sobre dos ruedas. Rutas probadas, consejos reales y memoria local.
         </p>
       </div>
-      
-      <!-- Enlaces rápidos -->
-      <div>
-        <h3 class="font-semibold text-lg mb-4">Enlaces rápidos</h3>
-        <ul class="space-y-2">
+
+      <!-- Navegación -->
+      <div class="md:col-span-4">
+        <p class="text-[10px] uppercase tracking-[0.25em] font-semibold text-stone-500 mb-5">
+          Navegar
+        </p>
+        <ul class="grid grid-cols-2 gap-y-3 gap-x-6">
           {quickLinks.map((link) => (
             <li>
-              <a 
-                href={link.href} 
-                class="text-slate-400 hover:text-white transition-colors text-sm"
+              <a
+                href={link.href}
+                class="text-stone-300 hover:text-white transition-colors text-sm inline-flex items-center gap-2 group"
               >
-                {link.label}
+                <span class="group-hover:translate-x-0.5 transition-transform">{link.label}</span>
+                <span class="text-stone-600 group-hover:text-white transition-colors" aria-hidden="true">→</span>
               </a>
             </li>
           ))}
         </ul>
       </div>
-      
+
       <!-- Contacto -->
-      <div>
-        <h3 class="font-semibold text-lg mb-4">Contacto</h3>
-        <ul class="space-y-3">
-          <li class="flex items-center gap-3 text-slate-400 text-sm">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
-            <a href="mailto:info@paraisociclista.com" class="hover:text-white transition-colors">
+      <div class="md:col-span-3">
+        <p class="text-[10px] uppercase tracking-[0.25em] font-semibold text-stone-500 mb-5">
+          Contacto
+        </p>
+        <ul class="space-y-3 text-sm">
+          <li>
+            <a href="mailto:info@paraisociclista.com" class="text-stone-300 hover:text-white transition-colors">
               info@paraisociclista.com
             </a>
           </li>
-          <li class="flex items-center gap-3 text-slate-400 text-sm">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-            <span>Xàtiva, Valencia, España</span>
-          </li>
+          <li class="text-stone-400">Xàtiva, València</li>
+          <li class="text-stone-400">Comunitat Valenciana</li>
         </ul>
       </div>
     </div>
-    
-    <!-- Copyright -->
-    <div class="mt-12 pt-8 border-t border-slate-800">
-      <p class="text-slate-500 text-sm text-center">
-        © {currentYear} Paraíso Ciclista. Todos los derechos reservados.
+
+    <!-- Bottom bar -->
+    <div class="mt-16 pt-6 border-t border-stone-800 flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-xs text-stone-500">
+      <p>© {currentYear} Paraíso Ciclista · Proyecto personal e independiente</p>
+      <p class="uppercase tracking-[0.2em] font-semibold text-stone-600">
+        Hecho en Xàtiva
       </p>
     </div>
   </div>
