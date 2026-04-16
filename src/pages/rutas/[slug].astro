@@ -19,19 +19,21 @@ if (!route) {
   return Astro.redirect('/404');
 }
 
-const difficultyConfig = {
-  easy: { label: 'Fácil', emoji: '🟢', bg: 'bg-emerald-100', text: 'text-emerald-700' },
-  medium: { label: 'Media', emoji: '🟡', bg: 'bg-amber-100', text: 'text-amber-700' },
-  hard: { label: 'Difícil', emoji: '🟠', bg: 'bg-orange-100', text: 'text-orange-700' },
-  expert: { label: 'Experto', emoji: '🔴', bg: 'bg-red-100', text: 'text-red-700' },
+const difficultyColors: Record<string, { bg: string; text: string; emoji: string }> = {
+  green:  { bg: 'bg-emerald-100', text: 'text-emerald-700', emoji: '🟢' },
+  yellow: { bg: 'bg-amber-100',   text: 'text-amber-700',   emoji: '🟡' },
+  orange: { bg: 'bg-orange-100',  text: 'text-orange-700',  emoji: '🟠' },
+  red:    { bg: 'bg-red-100',     text: 'text-red-700',     emoji: '🔴' },
 };
 
-const diff = route.difficulty ? difficultyConfig[route.difficulty] : null;
+const diff = route.difficulty
+  ? { ...difficultyColors[route.difficulty.color] ?? difficultyColors.green, label: route.difficulty.title }
+  : null;
 ---
 
 <Layout title={route.title}>
   <Header />
-  
+
   <main class="flex-1 bg-gradient-to-br from-slate-50 via-white to-sky-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <!-- Breadcrumb -->
@@ -44,19 +46,19 @@ const diff = route.difficulty ? difficultyConfig[route.difficulty] : null;
           <li class="text-slate-900 font-medium">{route.title}</li>
         </ol>
       </nav>
-      
+
       <!-- Imagen principal -->
       {route.mainImage && (
         <div class="relative rounded-2xl overflow-hidden shadow-xl mb-8">
           <div class="aspect-[21/9] w-full">
-            <img 
-              src={urlFor(route.mainImage).width(1400).height(600).url()} 
+            <img
+              src={urlFor(route.mainImage).width(1400).height(600).url()}
               alt={route.title}
               class="w-full h-full object-cover"
             />
           </div>
           <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-          
+
           <!-- Badges -->
           <div class="absolute top-4 left-4 flex gap-2">
             {route.featured && (
@@ -72,24 +74,26 @@ const diff = route.difficulty ? difficultyConfig[route.difficulty] : null;
           </div>
         </div>
       )}
-      
+
       <!-- Contenido -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Columna principal -->
         <div class="lg:col-span-2 space-y-8">
           <div>
             <h1 class="text-4xl font-black text-slate-900">{route.title}</h1>
-            {route.routeType && route.routeType.length > 0 && (
+            {route.routeType && (
               <div class="flex gap-2 mt-3">
-                {route.routeType.map((type: string) => (
-                  <span class="text-sm text-primary-600 bg-primary-50 px-2 py-0.5 rounded capitalize">
-                    {type}
-                  </span>
-                ))}
+                <span class="inline-flex items-center gap-1.5 text-sm text-primary-600 bg-primary-50 px-3 py-1 rounded-full">
+                  {route.routeType.icon && <span>{route.routeType.icon}</span>}
+                  <span>{route.routeType.title}</span>
+                </span>
               </div>
             )}
+            {route.excerpt && (
+              <p class="mt-4 text-lg text-slate-600 leading-relaxed">{route.excerpt}</p>
+            )}
           </div>
-          
+
           <!-- Descripción -->
           <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 md:p-8">
             <h2 class="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
@@ -98,7 +102,7 @@ const diff = route.difficulty ? difficultyConfig[route.difficulty] : null;
             <div class="prose prose-slate max-w-none" set:html={route.description ? toHTML(route.description) : '<p>Descripción no disponible</p>'}>
             </div>
           </div>
-          
+
           <!-- Mapa -->
           {route.mapEmbed && (
             <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
@@ -110,15 +114,36 @@ const diff = route.difficulty ? difficultyConfig[route.difficulty] : null;
               <div class="aspect-video" set:html={route.mapEmbed}></div>
             </div>
           )}
+
+          <!-- Galería -->
+          {route.gallery && route.gallery.length > 0 && (
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 md:p-8">
+              <h2 class="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                🖼️ Galería
+              </h2>
+              <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {route.gallery.map((img: any) => (
+                  <div class="aspect-square rounded-xl overflow-hidden">
+                    <img
+                      src={urlFor(img).width(600).height(600).url()}
+                      alt={route.title}
+                      class="w-full h-full object-cover hover:scale-105 transition-transform"
+                      loading="lazy"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
-        
+
         <!-- Sidebar -->
         <div class="space-y-6">
           <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 sticky top-24">
             <h3 class="text-lg font-semibold text-slate-900 mb-6">
               Información de la Ruta
             </h3>
-            
+
             <div class="space-y-5">
               {route.distance && (
                 <div class="flex items-center gap-4">
@@ -131,7 +156,31 @@ const diff = route.difficulty ? difficultyConfig[route.difficulty] : null;
                   </div>
                 </div>
               )}
-              
+
+              {route.elevation && (
+                <div class="flex items-center gap-4">
+                  <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center">
+                    <span class="text-2xl">⛰️</span>
+                  </div>
+                  <div>
+                    <p class="text-sm text-slate-500">Desnivel</p>
+                    <p class="text-xl font-bold text-slate-900">{route.elevation} m</p>
+                  </div>
+                </div>
+              )}
+
+              {route.duration && (
+                <div class="flex items-center gap-4">
+                  <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-indigo-100 flex items-center justify-center">
+                    <span class="text-2xl">⏱️</span>
+                  </div>
+                  <div>
+                    <p class="text-sm text-slate-500">Duración estimada</p>
+                    <p class="text-xl font-bold text-slate-900">{route.duration}</p>
+                  </div>
+                </div>
+              )}
+
               {diff && (
                 <div class="flex items-center gap-4">
                   <div class={`flex-shrink-0 w-12 h-12 rounded-xl ${diff.bg} flex items-center justify-center`}>
@@ -143,7 +192,31 @@ const diff = route.difficulty ? difficultyConfig[route.difficulty] : null;
                   </div>
                 </div>
               )}
-              
+
+              {route.startPoint && (
+                <div class="flex items-center gap-4">
+                  <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-teal-100 flex items-center justify-center">
+                    <span class="text-2xl">📍</span>
+                  </div>
+                  <div>
+                    <p class="text-sm text-slate-500">Punto de inicio</p>
+                    <p class="text-lg font-semibold text-slate-900">{route.startPoint}</p>
+                  </div>
+                </div>
+              )}
+
+              {route.endPoint && (
+                <div class="flex items-center gap-4">
+                  <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-rose-100 flex items-center justify-center">
+                    <span class="text-2xl">🏁</span>
+                  </div>
+                  <div>
+                    <p class="text-sm text-slate-500">Punto final</p>
+                    <p class="text-lg font-semibold text-slate-900">{route.endPoint}</p>
+                  </div>
+                </div>
+              )}
+
               {route.featured && (
                 <div class="flex items-center gap-4">
                   <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-yellow-100 flex items-center justify-center">
@@ -156,13 +229,15 @@ const diff = route.difficulty ? difficultyConfig[route.difficulty] : null;
                 </div>
               )}
             </div>
-            
+
             {route.gpxFile && (
               <>
                 <hr class="my-6 border-slate-100" />
-                <a 
-                  href={route.gpxFile.asset.url}
+                <a
+                  href={route.gpxFile}
                   download
+                  target="_blank"
+                  rel="noopener"
                   class="flex items-center justify-center gap-2 w-full px-5 py-3 bg-gradient-to-r from-sky-500 to-blue-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all"
                 >
                   ⬇️ Descargar archivo GPX
@@ -174,6 +249,6 @@ const diff = route.difficulty ? difficultyConfig[route.difficulty] : null;
       </div>
     </div>
   </main>
-  
+
   <Footer />
 </Layout>

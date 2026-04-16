@@ -20,9 +20,16 @@ const __dirname = path.dirname(__filename);
 // CONFIGURACIÓN - ¡CAMBIA ESTOS VALORES!
 // ============================================
 
-const SANITY_PROJECT_ID = 'kb9dsoe4'; // Cambia esto
-const SANITY_DATASET = 'production';
-const SANITY_TOKEN = 'sklYB7IRiC2tbqtvn1JaMpiDT9vPnTU67tZSI6NaBQkm3CuCqZJqz0LtPJYe6XkXmQdMEHkWuHw8aMu7zo7sPmXqJiwXoOexSCiDdPdFhnH7ZSmfXMnm68lwHGNX3xeFwOQOpkdLME1WwakZNmA6441qNvOf3ti1dobOEGfsk5QRt62hDvBd'; // Obtén esto en sanity.io/manage
+const SANITY_PROJECT_ID = process.env.SANITY_PROJECT_ID || 'kb9dsoe4';
+const SANITY_DATASET = process.env.SANITY_DATASET || 'production';
+const SANITY_TOKEN = process.env.SANITY_TOKEN;
+
+if (!SANITY_TOKEN) {
+  console.error('ERROR: Falta la variable de entorno SANITY_TOKEN.');
+  console.error('Crea un archivo .env en /migration con: SANITY_TOKEN=tu_token');
+  console.error('O ejecuta: SANITY_TOKEN=tu_token node import-to-sanity.mjs');
+  process.exit(1);
+}
 
 // ============================================
 

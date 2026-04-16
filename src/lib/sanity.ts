@@ -114,8 +114,11 @@ export const queries = {
   }`,
   
   routeBySlug: `*[_type == "route" && slug.current == $slug][0] {
-    _id, title, slug, description, mainImage, distance, difficulty, 
-    featured, gpxFile, mapEmbed, routeType
+    _id, title, slug, description, excerpt, mainImage, gallery,
+    distance, elevation, duration,
+    difficulty->{ title, slug, color, description },
+    routeType->{ title, slug, icon, description },
+    featured, gpxFile, mapEmbed, startPoint, endPoint
   }`,
 
   // Restaurantes
