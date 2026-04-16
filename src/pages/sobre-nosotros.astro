@@ -14,22 +14,22 @@ const values = [
   {
     icon: '🗺️',
     title: 'Rutas probadas, no copiadas',
-    text: 'Cada itinerario que publicamos lo hemos rodado metro a metro. Sabemos dónde hay una fuente operativa, qué bar abre el domingo por la mañana y qué puerto conviene afrontar a primera hora.',
+    text: 'Cada itinerario que publico lo he rodado metro a metro. Sé dónde hay una fuente operativa, qué bar abre el domingo por la mañana y qué puerto conviene afrontar a primera hora.',
   },
   {
     icon: '🌿',
-    title: 'Cicloturismo respetuoso',
-    text: 'Creemos en un ritmo lento, en los pueblos pequeños que se mantienen vivos gracias a quien para a tomar algo, y en un territorio que merece ser descubierto sin prisas.',
+    title: 'Cicloturismo con potencial',
+    text: 'Xàtiva tiene todo lo que un destino cicloturista puede ofrecer: clima, orografía, patrimonio, gastronomía y carreteras tranquilas. Falta ordenarlo y contarlo bien. Esa es la misión.',
   },
   {
     icon: '📍',
     title: 'Conocimiento local',
-    text: 'No hablamos de oídas. Vivimos aquí, comemos arròs al forn los jueves, subimos al castillo al amanecer y sabemos por qué el retrato de Felipe V sigue cabeza abajo en el Almodí.',
+    text: 'No hablo de oídas. Vivo aquí, como arròs al forn los jueves, subo al castillo al amanecer y sé por qué el retrato de Felipe V sigue cabeza abajo en el Almodí.',
   },
   {
     icon: '🤝',
-    title: 'Comunidad abierta',
-    text: 'Esta web crece con quien la usa. Si echas en falta una ruta, un taller o un bar bike-friendly, escríbenos y lo incorporamos.',
+    title: 'Proyecto abierto',
+    text: 'Esta web crece con quien la usa. Si echas en falta una ruta, un taller o un bar bike-friendly, escríbeme y lo incorporo. La comunidad ciclista local está invitada a colaborar.',
   },
 ];
 
@@ -78,7 +78,7 @@ const offerings = [
           La guía honesta de Xàtiva<br />para quien rueda
         </h1>
         <p class="mt-6 text-lg md:text-xl text-white/85 max-w-2xl mx-auto leading-relaxed">
-          Un proyecto independiente hecho por ciclistas locales. Rutas probadas, consejos reales y una mirada auténtica sobre una de las mejores tierras de España para montar en bicicleta.
+          Un proyecto personal e independiente para poner en valor el enorme potencial cicloturista de Xàtiva y su comarca. Rutas probadas, consejos reales y una mirada auténtica sobre una tierra con una tradición ciclista profunda.
         </p>
       </div>
     </section>
@@ -106,13 +106,19 @@ const offerings = [
           ¿Por qué existe esta web?
         </h2>
         <p class="text-slate-600 leading-relaxed">
-          Paraíso Ciclista nace de una frustración compartida: cuando buscábamos información ciclista sobre Xàtiva encontrábamos guías copiadas unas de otras, datos desactualizados, rutas que nadie había pedaleado y recomendaciones gastronómicas genéricas. Xàtiva merece más.
+          Paraíso Ciclista es un proyecto <strong>personal</strong>. Detrás no hay una empresa ni un colectivo: hay una persona, aficionada al ciclismo, que vive en Xàtiva y tiene una convicción clara: <strong>esta comarca tiene un potencial cicloturista enorme y aún por poner en valor</strong>.
         </p>
         <p class="text-slate-600 leading-relaxed">
-          Somos ciclistas que vivimos aquí. Pedaleamos por la Costera, la Vall d’Albaida, el Canal de Navarrés y hasta el mar varias veces por semana. Conocemos el castillo al amanecer, la Font dels 25 Dolls como punto de encuentro, qué bar de Llosa de Ranes abre temprano y por qué subir al Benicadell en julio es mala idea. Esta web es la guía que nos habría gustado encontrar.
+          Xàtiva no necesita inventarse como destino ciclista; ya lo es desde hace generaciones. Aquí se celebra desde 1951 el <strong>Trofeo de Velocidad Fira de Xàtiva</strong>, la carrera urbana más antigua de España en activo. Los clubes locales llevan décadas formando cantera, los sábados por la mañana los puertos de la Vall d’Albaida y del Canal de Navarrés se llenan de ciclistas, y en los bares de los pueblos los maillots y los cafés conviven con una naturalidad que delata la costumbre.
         </p>
         <p class="text-slate-600 leading-relaxed">
-          No nos financia ninguna marca de bicicletas, ningún ayuntamiento y ningún hotel. Si recomendamos un restaurante es porque hemos comido allí; si proponemos una ruta es porque la hemos rodado. La independencia es lo único que hace útil una guía.
+          Pero cuando buscaba información online para planificar rutas, recomendar la zona a amigos de fuera o explicar por qué merece la pena venir, solo encontraba guías copiadas unas de otras, datos desactualizados, rutas que nadie había pedaleado y recomendaciones gastronómicas genéricas. Xàtiva merece una guía mejor.
+        </p>
+        <p class="text-slate-600 leading-relaxed">
+          Esta es mi aportación: una guía honesta, rodada, verificada y con memoria local. Sin patrocinios de marcas, ayuntamientos ni hoteles. Si recomiendo un restaurante es porque he comido allí; si publico una ruta es porque la he rodado. La independencia es lo único que hace útil una guía turística.
+        </p>
+        <p class="text-slate-600 leading-relaxed">
+          El objetivo a medio plazo es sencillo pero ambicioso: que quien busque "cicloturismo en la Comunitat Valenciana" encuentre Xàtiva entre las primeras respuestas, con razones sobradas para venir. Si te apasiona el ciclismo y la zona, estás invitado a sumar.
         </p>
       </div>
     </section>
@@ -137,6 +143,45 @@ const offerings = [
               <p class="text-slate-600 leading-relaxed">{v.text}</p>
             </div>
           ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Tradición ciclista de la zona -->
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
+      <div class="bg-gradient-to-br from-amber-50 via-white to-orange-50 rounded-3xl border border-amber-100 p-8 md:p-12">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-semibold uppercase tracking-[0.2em] mb-5">
+          🏆 Tradición ciclista
+        </div>
+        <h2 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
+          Xàtiva es, históricamente, una tierra de ciclistas
+        </h2>
+        <p class="mt-4 text-slate-600 text-lg leading-relaxed max-w-3xl">
+          Aquí el ciclismo no es una moda: es costumbre. Son décadas de clubes locales, de carreras en el asfalto de las calles del centro, de aficionados que suben al castillo en bici antes del desayuno y de pelotones de fin de semana que dominan las carreteras de la comarca.
+        </p>
+
+        <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+            <div class="text-3xl font-black text-amber-600">1951</div>
+            <div class="mt-2 font-bold text-slate-900">Trofeo de Velocidad Fira</div>
+            <p class="mt-2 text-sm text-slate-600 leading-relaxed">
+              Carrera urbana ininterrumpida durante la Fira d'Agost. La más antigua de España en activo.
+            </p>
+          </div>
+          <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+            <div class="text-3xl font-black text-emerald-600">Volta</div>
+            <div class="mt-2 font-bold text-slate-900">Comunitat Valenciana</div>
+            <p class="mt-2 text-sm text-slate-600 leading-relaxed">
+              Xàtiva ha sido salida y meta de etapa en la Volta, con el castillo como final explosivo reconocido en el circuito profesional.
+            </p>
+          </div>
+          <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+            <div class="text-3xl font-black text-sky-600">Cantera</div>
+            <div class="mt-2 font-bold text-slate-900">Clubes locales</div>
+            <p class="mt-2 text-sm text-slate-600 leading-relaxed">
+              Los clubes de Xàtiva y pueblos vecinos (Canals, Genovés, Ontinyent) han formado durante décadas sub-23 con proyección nacional.
+            </p>
+          </div>
         </div>
       </div>
     </section>
@@ -209,10 +254,10 @@ const offerings = [
       <div class="bg-gradient-to-br from-emerald-50 via-white to-sky-50 rounded-3xl border border-emerald-100 p-8 md:p-12 text-center">
         <div class="text-5xl mb-4">✉️</div>
         <h2 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
-          ¿Nos ayudas a mejorar?
+          ¿Me ayudas a mejorar?
         </h2>
         <p class="mt-4 text-slate-600 text-lg max-w-2xl mx-auto">
-          ¿Conoces una ruta que no está aquí? ¿Un bar ciclista imprescindible? ¿Has detectado un error? ¿Quieres colaborar con contenido propio? Escríbenos: esta web es de la comunidad.
+          ¿Conoces una ruta que no está aquí? ¿Un bar ciclista imprescindible? ¿Has detectado un error? ¿Quieres colaborar con contenido propio? Escríbeme: esta web se hace mejor con la comunidad ciclista local.
         </p>
         <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
           <a
