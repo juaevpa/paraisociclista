@@ -1,0 +1,153 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import { sanityClient, queries, urlFor } from '@/lib/sanity';
+import { toHTML } from '@portabletext/to-html';
+
+export async function getStaticPaths() {
+  const hotels = await sanityClient.fetch(`*[_type == "hotel"]{ slug }`);
+  return hotels.map((h: any) => ({
+    params: { slug: h.slug.current },
+  }));
+}
+
+const { slug } = Astro.params;
+const hotel = await sanityClient.fetch(queries.hotelBySlug, { slug });
+
+if (!hotel) {
+  return Astro.redirect('/404');
+}
+
+const amenityLabels: Record<string, string> = {
+  wifi: '📶 WiFi',
+  parking: '🅿️ Parking',
+  pool: '🏊 Piscina',
+  restaurant: '🍽️ Restaurante',
+  gym: '💪 Gimnasio',
+  spa: '💆 Spa',
+  'bike-storage': '🚲 Guardabicis',
+  ac: '❄️ Aire Acondicionado',
+};
+---
+
+<Layout title={hotel.title}>
+  <Header />
+  
+  <main class="flex-1">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <nav class="mb-6">
+        <ol class="flex items-center gap-2 text-sm text-slate-500">
+          <li><a href="/" class="hover:text-primary-600">Inicio</a></li>
+          <li>/</li>
+          <li><a href="/alojamiento" class="hover:text-primary-600">Alojamiento</a></li>
+          <li>/</li>
+          <li class="text-slate-900 font-medium">{hotel.title}</li>
+        </ol>
+      </nav>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2">
+          <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
+            <h1 class="text-3xl font-bold mb-4">{hotel.title}</h1>
+            
+            {hotel.mainImage && (
+              <div class="mb-6 rounded-xl overflow-hidden">
+                <img 
+                  src={urlFor(hotel.mainImage).width(800).height(450).url()} 
+                  alt={hotel.title}
+                  class="w-full h-auto"
+                />
+              </div>
+            )}
+            
+            <div class="flex items-center gap-6 mb-6">
+              {hotel.rating && (
+                <div class="flex items-center gap-2">
+                  <span class="text-slate-500 font-medium">Valoración:</span>
+                  <div class="flex text-amber-400">
+                    {[...Array(5)].map((_, i) => (
+                      <svg xmlns="http://www.w3.org/2000/svg" class={`w-5 h-5 ${i < hotel.rating ? 'fill-current' : 'fill-slate-200'}`} viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                      </svg>
+                    ))}
+                  </div>
+                  <span class="text-slate-600">({hotel.rating}/5)</span>
+                </div>
+              )}
+              
+              {hotel.priceLevel && (
+                <div class="flex items-center gap-2">
+                  <span class="text-slate-500 font-medium">Precio:</span>
+                  <span class="text-slate-600">{'€'.repeat(hotel.priceLevel)}</span>
+                </div>
+              )}
+            </div>
+            
+            {hotel.description && (
+              <div class="prose prose-slate max-w-none" set:html={hotel.description ? toHTML(hotel.description) : ''}>
+              </div>
+            )}
+            
+            {hotel.amenities && hotel.amenities.length > 0 && (
+              <div class="mt-8">
+                <h2 class="text-xl font-semibold mb-4">Servicios</h2>
+                <div class="flex flex-wrap gap-2">
+                  {hotel.amenities.map((amenity: string) => (
+                    <span class="px-3 py-1.5 bg-slate-100 rounded-lg text-sm">
+                      {amenityLabels[amenity] || amenity}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+        
+        <div>
+          <div class="bg-white rounded-2xl shadow-lg p-6 sticky top-24">
+            <h2 class="text-xl font-semibold mb-4">Información de contacto</h2>
+            
+            <div class="space-y-4">
+              {hotel.address && (
+                <div class="flex items-start gap-3">
+                  <span class="text-xl">📍</span>
+                  <div>
+                    <strong class="block text-slate-900 mb-1">Dirección:</strong>
+                    <p class="text-slate-600">{hotel.address}</p>
+                  </div>
+                </div>
+              )}
+              
+              {hotel.phone && (
+                <div class="flex items-start gap-3">
+                  <span class="text-xl">📞</span>
+                  <div>
+                    <strong class="block text-slate-900 mb-1">Teléfono:</strong>
+                    <a href={`tel:${hotel.phone}`} class="text-primary-600 hover:text-primary-700">
+                      {hotel.phone}
+                    </a>
+                  </div>
+                </div>
+              )}
+              
+              {hotel.website && (
+                <div class="flex items-start gap-3">
+                  <span class="text-xl">🌐</span>
+                  <div>
+                    <strong class="block text-slate-900 mb-1">Web:</strong>
+                    <a href={hotel.website} target="_blank" rel="noopener" class="text-primary-600 hover:text-primary-700">
+                      Visitar web
+                    </a>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <Footer />
+</Layout>

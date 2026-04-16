@@ -1,0 +1,164 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import { sanityClient, queries, urlFor } from '@/lib/sanity';
+import { toHTML } from '@portabletext/to-html';
+
+export async function getStaticPaths() {
+  const restaurants = await sanityClient.fetch(`*[_type == "restaurant"]{ slug }`);
+  return restaurants.map((r: any) => ({
+    params: { slug: r.slug.current },
+  }));
+}
+
+const { slug } = Astro.params;
+const restaurant = await sanityClient.fetch(queries.restaurantBySlug, { slug });
+
+if (!restaurant) {
+  return Astro.redirect('/404');
+}
+---
+
+<Layout title={restaurant.title}>
+  <Header />
+  
+  <main class="flex-1">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Breadcrumb -->
+      <nav class="mb-6">
+        <ol class="flex items-center gap-2 text-sm text-slate-500">
+          <li><a href="/" class="hover:text-primary-600">Inicio</a></li>
+          <li>/</li>
+          <li><a href="/restaurantes" class="hover:text-primary-600">Restaurantes</a></li>
+          <li>/</li>
+          <li class="text-slate-900 font-medium">{restaurant.title}</li>
+        </ol>
+      </nav>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Columna principal -->
+        <div class="lg:col-span-2">
+          <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
+            <h1 class="text-3xl font-bold mb-4">{restaurant.title}</h1>
+            
+            <!-- Imagen -->
+            {restaurant.mainImage && (
+              <div class="mb-6 rounded-xl overflow-hidden">
+                <img 
+                  src={urlFor(restaurant.mainImage).width(800).height(450).url()} 
+                  alt={restaurant.title}
+                  class="w-full h-auto"
+                />
+              </div>
+            )}
+            
+            <!-- Rating y precio -->
+            <div class="flex items-center gap-6 mb-6">
+              {restaurant.rating && (
+                <div class="flex items-center gap-2">
+                  <span class="text-slate-500 font-medium">Valoración:</span>
+                  <div class="flex text-amber-400">
+                    {[...Array(5)].map((_, i) => (
+                      <svg xmlns="http://www.w3.org/2000/svg" class={`w-5 h-5 ${i < restaurant.rating ? 'fill-current' : 'fill-slate-200'}`} viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                      </svg>
+                    ))}
+                  </div>
+                  <span class="text-slate-600">({restaurant.rating}/5)</span>
+                </div>
+              )}
+              
+              {restaurant.priceLevel && (
+                <div class="flex items-center gap-2">
+                  <span class="text-slate-500 font-medium">Precio:</span>
+                  <span class="text-slate-600">{'€'.repeat(restaurant.priceLevel)}</span>
+                </div>
+              )}
+            </div>
+            
+            <!-- Descripción -->
+            {restaurant.description && (
+              <div class="prose prose-slate max-w-none" set:html={restaurant.description ? toHTML(restaurant.description) : ''}>
+              </div>
+            )}
+            
+            <!-- Reseñas -->
+            {restaurant.reviews && restaurant.reviews.length > 0 && (
+              <div class="mt-8">
+                <h2 class="text-2xl font-semibold mb-4">Reseñas</h2>
+                <div class="space-y-6">
+                  {restaurant.reviews.map((review: any) => (
+                    <div class="border-b border-slate-200 pb-6 last:border-0">
+                      <div class="flex items-center gap-3 mb-2">
+                        {review.profilePhoto && (
+                          <img src={review.profilePhoto} alt={review.author} class="w-10 h-10 rounded-full" />
+                        )}
+                        <div>
+                          <p class="font-medium text-slate-900">{review.author}</p>
+                          <div class="flex text-amber-400">
+                            {[...Array(5)].map((_, i) => (
+                              <svg xmlns="http://www.w3.org/2000/svg" class={`w-4 h-4 ${i < review.rating ? 'fill-current' : 'fill-slate-200'}`} viewBox="0 0 24 24">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                              </svg>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                      <p class="text-slate-600">{review.text}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div>
+          <div class="bg-white rounded-2xl shadow-lg p-6 sticky top-24">
+            <h2 class="text-xl font-semibold mb-4">Información de contacto</h2>
+            
+            <div class="space-y-4">
+              {restaurant.address && (
+                <div class="flex items-start gap-3">
+                  <span class="text-xl">📍</span>
+                  <div>
+                    <strong class="block text-slate-900 mb-1">Dirección:</strong>
+                    <p class="text-slate-600">{restaurant.address}</p>
+                  </div>
+                </div>
+              )}
+              
+              {restaurant.phone && (
+                <div class="flex items-start gap-3">
+                  <span class="text-xl">📞</span>
+                  <div>
+                    <strong class="block text-slate-900 mb-1">Teléfono:</strong>
+                    <a href={`tel:${restaurant.phone}`} class="text-primary-600 hover:text-primary-700">
+                      {restaurant.phone}
+                    </a>
+                  </div>
+                </div>
+              )}
+              
+              {restaurant.website && (
+                <div class="flex items-start gap-3">
+                  <span class="text-xl">🌐</span>
+                  <div>
+                    <strong class="block text-slate-900 mb-1">Web:</strong>
+                    <a href={restaurant.website} target="_blank" rel="noopener" class="text-primary-600 hover:text-primary-700">
+                      Visitar web
+                    </a>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <Footer />
+</Layout>

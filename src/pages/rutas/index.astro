@@ -1,0 +1,162 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import RouteCard from '@/components/RouteCard.astro';
+import { sanityClient, queries } from '@/lib/sanity';
+
+// Obtener todas las rutas
+const routes = await sanityClient.fetch(queries.allRoutes);
+
+// Obtener filtros de la URL
+const url = new URL(Astro.request.url);
+const difficultyFilter = url.searchParams.getAll('difficulty');
+const typeFilter = url.searchParams.getAll('type');
+
+// Filtrar rutas
+let filteredRoutes = routes;
+if (difficultyFilter.length > 0) {
+  filteredRoutes = filteredRoutes.filter((r: any) => difficultyFilter.includes(r.difficulty));
+}
+if (typeFilter.length > 0) {
+  filteredRoutes = filteredRoutes.filter((r: any) => 
+    r.routeType?.some((t: string) => typeFilter.includes(t))
+  );
+}
+---
+
+<Layout title="Rutas Ciclistas" description="Descubre las mejores rutas ciclistas en Xàtiva y sus alrededores">
+  <Header />
+  
+  <main class="flex-1">
+    <!-- Hero -->
+    <section class="relative py-16 md:py-24 overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-emerald-600 via-emerald-700 to-teal-800"></div>
+      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-4xl md:text-5xl font-black text-white">
+          Descubre las mejores rutas ciclistas en Xàtiva
+        </h1>
+        <p class="mt-4 text-lg text-white/80 max-w-2xl mx-auto">
+          Explora nuestra selección de rutas para todos los niveles
+        </p>
+      </div>
+    </section>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <!-- Filtros -->
+      <form method="get" class="mb-8">
+        <div class="flex flex-wrap items-center gap-4">
+          <span class="text-slate-700 font-medium">Filtros:</span>
+          
+          <!-- Dificultad -->
+          <div class="relative" x-data="{ open: false }">
+            <button 
+              type="button"
+              class="flex items-center gap-2 px-4 py-2 bg-white rounded-xl border border-slate-200 hover:border-slate-300 transition-colors"
+              onclick="this.nextElementSibling.classList.toggle('hidden')"
+            >
+              <span>Dificultad</span>
+              {difficultyFilter.length > 0 && (
+                <span class="px-1.5 py-0.5 bg-primary-500 text-white text-xs rounded-full">
+                  {difficultyFilter.length}
+                </span>
+              )}
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div class="hidden absolute top-full left-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-slate-200 py-2 z-10">
+              {[
+                { value: 'easy', label: '🟢 Fácil' },
+                { value: 'medium', label: '🟡 Media' },
+                { value: 'hard', label: '🟠 Difícil' },
+                { value: 'expert', label: '🔴 Experto' },
+              ].map((item) => (
+                <label class="flex items-center px-4 py-2 hover:bg-slate-50 cursor-pointer">
+                  <input 
+                    type="checkbox" 
+                    name="difficulty" 
+                    value={item.value}
+                    checked={difficultyFilter.includes(item.value)}
+                    class="w-4 h-4 rounded border-slate-300 text-primary-500 focus:ring-primary-500"
+                  />
+                  <span class="ml-2 text-sm">{item.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+          
+          <!-- Tipo de ruta -->
+          <div class="relative">
+            <button 
+              type="button"
+              class="flex items-center gap-2 px-4 py-2 bg-white rounded-xl border border-slate-200 hover:border-slate-300 transition-colors"
+              onclick="this.nextElementSibling.classList.toggle('hidden')"
+            >
+              <span>Tipo de ruta</span>
+              {typeFilter.length > 0 && (
+                <span class="px-1.5 py-0.5 bg-primary-500 text-white text-xs rounded-full">
+                  {typeFilter.length}
+                </span>
+              )}
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div class="hidden absolute top-full left-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-slate-200 py-2 z-10">
+              {[
+                { value: 'carretera', label: 'Carretera' },
+                { value: 'montaña', label: 'Montaña' },
+                { value: 'gravel', label: 'Gravel' },
+              ].map((item) => (
+                <label class="flex items-center px-4 py-2 hover:bg-slate-50 cursor-pointer">
+                  <input 
+                    type="checkbox" 
+                    name="type" 
+                    value={item.value}
+                    checked={typeFilter.includes(item.value)}
+                    class="w-4 h-4 rounded border-slate-300 text-primary-500 focus:ring-primary-500"
+                  />
+                  <span class="ml-2 text-sm">{item.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+          
+          <div class="flex gap-2 ml-auto">
+            <a 
+              href="/rutas"
+              class="px-4 py-2 text-slate-600 hover:text-slate-900 font-medium text-sm"
+            >
+              Resetear
+            </a>
+            <button 
+              type="submit"
+              class="px-4 py-2 bg-primary-500 text-white font-medium rounded-xl hover:bg-primary-600 transition-colors text-sm"
+            >
+              Aplicar filtros
+            </button>
+          </div>
+        </div>
+      </form>
+      
+      <!-- Grid de rutas -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredRoutes.map((route: any) => (
+          <RouteCard route={route} />
+        ))}
+      </div>
+      
+      {filteredRoutes.length === 0 && (
+        <div class="text-center py-16">
+          <p class="text-slate-500 text-lg">No se encontraron rutas con los filtros seleccionados.</p>
+          <a href="/rutas" class="mt-4 inline-block text-primary-600 hover:text-primary-700 font-medium">
+            Ver todas las rutas
+          </a>
+        </div>
+      )}
+    </div>
+  </main>
+  
+  <Footer />
+</Layout>

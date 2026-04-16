@@ -1,0 +1,42 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import CategoryCard from '@/components/CategoryCard.astro';
+import { sanityClient, queries } from '@/lib/sanity';
+
+const categories = await sanityClient.fetch(queries.allExploreCategories);
+---
+
+<Layout title="Explorar Xàtiva" description="Descubre los mejores lugares de Xàtiva">
+  <Header />
+  
+  <main class="flex-1">
+    <section class="relative py-16 md:py-24 overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-sky-500 via-cyan-500 to-teal-500"></div>
+      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-4xl md:text-5xl font-black text-white">📍 Explora Xàtiva</h1>
+        <p class="mt-4 text-lg text-white/80 max-w-2xl mx-auto">
+          Descubre la historia, cultura y naturaleza de nuestra región
+        </p>
+      </div>
+    </section>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {categories.map((category: any) => (
+          <CategoryCard category={category} />
+        ))}
+      </div>
+      
+      {categories.length === 0 && (
+        <div class="text-center py-16">
+          <span class="text-6xl">📍</span>
+          <p class="mt-4 text-slate-500 text-lg">No hay categorías todavía.</p>
+        </div>
+      )}
+    </div>
+  </main>
+  
+  <Footer />
+</Layout>

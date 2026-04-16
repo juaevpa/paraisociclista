@@ -1,0 +1,56 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import { sanityClient, queries, urlFor } from '@/lib/sanity';
+import { toHTML } from '@portabletext/to-html';
+
+export async function getStaticPaths() {
+  const posts = await sanityClient.fetch(`*[_type == "blogPost"]{ slug }`);
+  return posts.map((p: any) => ({ params: { slug: p.slug.current } }));
+}
+
+const { slug } = Astro.params;
+const post = await sanityClient.fetch(queries.blogPostBySlug, { slug });
+if (!post) return Astro.redirect('/404');
+---
+
+<Layout title={post.title}>
+  <Header />
+  
+  <main class="flex-1">
+    <article class="max-w-4xl mx-auto px-4 py-12">
+      <nav class="mb-6">
+        <ol class="flex items-center gap-2 text-sm text-slate-500">
+          <li><a href="/" class="hover:text-primary-600">Inicio</a></li>
+          <li>/</li>
+          <li><a href="/blog" class="hover:text-primary-600">Blog</a></li>
+          <li>/</li>
+          <li class="text-slate-900 font-medium truncate">{post.title}</li>
+        </ol>
+      </nav>
+      
+      {post.mainImage && (
+        <div class="rounded-2xl overflow-hidden mb-8">
+          <img src={urlFor(post.mainImage).width(1200).height(600).url()} alt={post.title} class="w-full h-auto" />
+        </div>
+      )}
+      
+      <header class="mb-8">
+        <h1 class="text-4xl font-black text-slate-900 leading-tight">{post.title}</h1>
+        <div class="mt-4 flex items-center gap-4 text-slate-500">
+          {post.publishedAt && <time>{new Date(post.publishedAt).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</time>}
+          {post.author && <span>Por {post.author}</span>}
+        </div>
+      </header>
+      
+      <div class="prose prose-lg prose-slate max-w-none" set:html={post.content ? toHTML(post.content) : ''}></div>
+      
+      <footer class="mt-12 pt-8 border-t border-slate-200">
+        <a href="/blog" class="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium">← Volver al blog</a>
+      </footer>
+    </article>
+  </main>
+  
+  <Footer />
+</Layout>

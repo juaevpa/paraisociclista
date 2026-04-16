@@ -1,0 +1,130 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import RouteCard from '@/components/RouteCard.astro';
+import PlaceCard from '@/components/PlaceCard.astro';
+import CategoryCard from '@/components/CategoryCard.astro';
+import { sanityClient, queries } from '@/lib/sanity';
+
+// Obtener contenido de la home
+const homeData = await sanityClient.fetch(queries.homeContent);
+---
+
+<Layout title="Inicio">
+  <Header />
+  
+  <main class="flex-1">
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-emerald-900 via-emerald-800 to-sky-900"></div>
+      <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1541625602330-2277a4c46182?w=1920')] bg-cover bg-center opacity-30"></div>
+      
+      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
+        <div class="max-w-3xl">
+          <h1 class="text-4xl md:text-6xl font-black text-white leading-tight animate-fade-in">
+            Paraíso Ciclista
+          </h1>
+          <p class="mt-6 text-lg md:text-xl text-white/80 leading-relaxed animate-fade-in animation-delay-100">
+            Descubre las mejores rutas ciclistas en Xàtiva y sus alrededores. 
+            Explora la historia, gastronomía y naturaleza de nuestra región.
+          </p>
+          
+          <!-- Buscador -->
+          <form action="/buscar" method="get" class="mt-8 animate-fade-in animation-delay-200">
+            <div class="flex rounded-2xl bg-white/10 backdrop-blur-lg p-2 border border-white/20">
+              <input 
+                type="search" 
+                name="q"
+                placeholder="Buscar rutas, restaurantes, lugares..."
+                class="flex-1 px-4 py-3 bg-transparent text-white placeholder-white/60 focus:outline-none"
+              />
+              <button 
+                type="submit"
+                class="px-6 py-3 bg-white text-emerald-700 font-semibold rounded-xl hover:bg-emerald-50 transition-colors"
+              >
+                Buscar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+      <!-- Wave decoration -->
+      <div class="absolute bottom-0 left-0 right-0">
+        <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="#f8fafc"/>
+        </svg>
+      </div>
+    </section>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <!-- Rutas destacadas -->
+      <section class="mb-16">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-bold text-slate-900">Rutas destacadas</h2>
+          <a href="/rutas" class="text-primary-600 hover:text-primary-700 font-medium text-sm flex items-center gap-1">
+            Ver todas
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {homeData.featuredRoutes?.map((route: any) => (
+            <RouteCard route={route} />
+          ))}
+        </div>
+        
+        {(!homeData.featuredRoutes || homeData.featuredRoutes.length === 0) && (
+          <div class="text-center py-12 text-slate-500">
+            No hay rutas destacadas todavía. ¡Añade contenido desde el panel de Sanity!
+          </div>
+        )}
+      </section>
+      
+      <!-- Dónde comer y alojarse -->
+      <section class="mb-16">
+        <h2 class="text-2xl font-bold text-slate-900 mb-6">Dónde comer y alojarse</h2>
+        
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          {homeData.latestRestaurants?.map((restaurant: any) => (
+            <PlaceCard place={restaurant} type="restaurant" />
+          ))}
+          {homeData.latestHotels?.map((hotel: any) => (
+            <PlaceCard place={hotel} type="hotel" />
+          ))}
+        </div>
+        
+        <div class="flex justify-center gap-4 mt-8">
+          <a 
+            href="/restaurantes"
+            class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary-500 text-white font-medium rounded-xl hover:bg-primary-600 transition-colors"
+          >
+            🍽️ Ver restaurantes
+          </a>
+          <a 
+            href="/alojamiento"
+            class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary-500 text-white font-medium rounded-xl hover:bg-primary-600 transition-colors"
+          >
+            🏨 Ver alojamientos
+          </a>
+        </div>
+      </section>
+      
+      <!-- Explorar Xàtiva -->
+      <section>
+        <h2 class="text-2xl font-bold text-slate-900 mb-6">Explora Xàtiva</h2>
+        
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {homeData.exploreCategories?.map((category: any) => (
+            <CategoryCard category={category} />
+          ))}
+        </div>
+      </section>
+    </div>
+  </main>
+  
+  <Footer />
+</Layout>

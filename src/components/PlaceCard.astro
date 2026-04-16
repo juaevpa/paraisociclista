@@ -1,0 +1,52 @@
+---
+import { urlFor } from '@/lib/sanity';
+
+interface Props {
+  place: {
+    _id: string;
+    title: string;
+    slug: { current: string };
+    mainImage?: any;
+    rating?: number;
+  };
+  type: 'restaurant' | 'hotel';
+}
+
+const { place, type } = Astro.props;
+
+const baseUrl = type === 'restaurant' ? '/restaurantes' : '/alojamiento';
+const icon = type === 'restaurant' ? '🍽️' : '🏨';
+---
+
+<a href={`${baseUrl}/${place.slug.current}`} class="group flex flex-col gap-3">
+  <div class="relative aspect-video rounded-xl overflow-hidden bg-slate-100">
+    {place.mainImage ? (
+      <img 
+        src={urlFor(place.mainImage).width(400).height(225).url()} 
+        alt={place.title}
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        loading="lazy"
+      />
+    ) : (
+      <div class="w-full h-full bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
+        <span class="text-4xl">{icon}</span>
+      </div>
+    )}
+    
+    <!-- Hover overlay -->
+    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
+  </div>
+  
+  <div>
+    <h3 class="text-base font-medium text-slate-900 group-hover:text-primary-600 transition-colors line-clamp-1">
+      {type === 'hotel' && <span class="text-slate-400 mr-1">🛏️</span>}
+      {place.title}
+    </h3>
+    
+    {place.rating && (
+      <p class="text-slate-500 text-sm mt-1">
+        {place.rating}/5 ⭐
+      </p>
+    )}
+  </div>
+</a>

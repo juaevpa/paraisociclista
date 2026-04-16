@@ -1,0 +1,52 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+---
+
+<Layout title="Sobre nosotros">
+  <Header />
+  
+  <main class="flex-1">
+    <section class="relative py-20 overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-emerald-600 via-teal-600 to-cyan-700"></div>
+      <div class="relative max-w-4xl mx-auto px-4 text-center">
+        <h1 class="text-4xl md:text-5xl font-black text-white">Sobre Paraíso Ciclista</h1>
+        <p class="mt-4 text-xl text-white/80">Descubriendo Xàtiva sobre dos ruedas</p>
+      </div>
+    </section>
+    
+    <div class="max-w-4xl mx-auto px-4 py-16">
+      <div class="prose prose-lg prose-slate max-w-none">
+        <p class="text-xl text-slate-600 leading-relaxed">
+          <strong>Paraíso Ciclista</strong> nació de la pasión por el ciclismo y el amor por nuestra tierra. 
+          Somos un grupo de ciclistas locales que queremos compartir las mejores rutas, lugares y experiencias 
+          de Xàtiva y sus alrededores.
+        </p>
+        
+        <h2>Nuestra misión</h2>
+        <p>
+          Queremos que tanto ciclistas locales como visitantes descubran la belleza de nuestra región 
+          desde la perspectiva única que ofrece la bicicleta. Desde las montañas que rodean Xàtiva 
+          hasta los campos de naranjos de la Ribera, cada ruta es una aventura.
+        </p>
+        
+        <h2>¿Qué ofrecemos?</h2>
+        <ul>
+          <li><strong>Rutas detalladas:</strong> Con mapas, descripciones y archivos GPX descargables</li>
+          <li><strong>Recomendaciones locales:</strong> Los mejores restaurantes y alojamientos para ciclistas</li>
+          <li><strong>Guía de Xàtiva:</strong> Descubre la historia y cultura de nuestra ciudad</li>
+          <li><strong>Comunidad:</strong> Conecta con otros ciclistas de la zona</li>
+        </ul>
+        
+        <h2>Contacto</h2>
+        <p>
+          ¿Tienes alguna sugerencia de ruta? ¿Quieres colaborar con nosotros? 
+          Escríbenos a <a href="mailto:info@paraisociclista.com">info@paraisociclista.com</a>
+        </p>
+      </div>
+    </div>
+  </main>
+  
+  <Footer />
+</Layout>

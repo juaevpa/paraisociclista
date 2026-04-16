@@ -1,0 +1,123 @@
+---
+// Esta página necesita SSR para leer parámetros de URL
+export const prerender = false;
+
+import Layout from '@/layouts/Layout.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import RouteCard from '@/components/RouteCard.astro';
+import RestaurantCard from '@/components/RestaurantCard.astro';
+import HotelCard from '@/components/HotelCard.astro';
+import { sanityClient } from '@/lib/sanity';
+
+// Función para normalizar texto: quita acentos, convierte a minúsculas y elimina espacios extra
+function normalizeText(text: string): string {
+  if (!text) return '';
+  return text
+    .toLowerCase()
+    .normalize('NFD') // Descompone caracteres con acentos (á -> a + ´)
+    .replace(/[\u0300-\u036f]/g, '') // Elimina los diacríticos (acentos)
+    .trim();
+}
+
+const query = Astro.url.searchParams.get('q') || '';
+
+let routes: any[] = [];
+let restaurants: any[] = [];
+let hotels: any[] = [];
+
+if (query.length >= 2) {
+  const allResults = await sanityClient.fetch(`*[_type in ["route", "restaurant", "hotel"]] {
+    _id, _type, title, slug, mainImage, 
+    distance, difficulty,
+    rating, priceLevel, address
+  }`);
+  
+  // Normalizar el query de búsqueda
+  const normalizedQuery = normalizeText(query);
+  
+  // Filtrar resultados comparando textos normalizados
+  const filtered = (allResults || []).filter((item: any) => {
+    const normalizedTitle = normalizeText(item.title || '');
+    return normalizedTitle.includes(normalizedQuery);
+  });
+  
+  routes = filtered.filter((r: any) => r._type === 'route');
+  restaurants = filtered.filter((r: any) => r._type === 'restaurant');
+  hotels = filtered.filter((r: any) => r._type === 'hotel');
+}
+
+const totalResults = routes.length + restaurants.length + hotels.length;
+---
+
+<Layout title={query ? `Buscar: ${query}` : 'Buscar'}>
+  <Header />
+  
+  <main class="flex-1">
+    <section class="bg-gradient-to-br from-slate-100 to-slate-200 py-12">
+      <div class="max-w-4xl mx-auto px-4">
+        <h1 class="text-3xl font-bold text-center mb-8">🔍 Buscar</h1>
+        
+        <form action="/buscar" method="GET" class="relative">
+          <input 
+            type="text" 
+            name="q" 
+            value={query}
+            placeholder="Buscar rutas, restaurantes, hoteles..."
+            class="w-full px-6 py-4 pr-14 text-lg rounded-2xl border-2 border-slate-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-100 outline-none transition-all"
+          />
+          <button 
+            type="submit"
+            class="absolute right-3 top-1/2 -translate-y-1/2 p-2 bg-primary-500 text-white rounded-xl hover:bg-primary-600 transition-colors"
+          >
+            🔍
+          </button>
+        </form>
+      </div>
+    </section>
+    
+    <div class="max-w-7xl mx-auto px-4 py-12">
+      {query.length < 2 ? (
+        <div class="text-center py-12">
+          <span class="text-6xl">🔍</span>
+          <p class="mt-4 text-slate-500 text-lg">Escribe al menos 2 caracteres para buscar</p>
+        </div>
+      ) : totalResults === 0 ? (
+        <p class="text-slate-500">No se encontraron resultados para "{query}"</p>
+      ) : (
+        <div>
+          <p class="text-slate-500 mb-8">{totalResults} resultado(s) para "{query}"</p>
+          
+          {routes.length > 0 && (
+            <section class="mb-12">
+              <h2 class="text-2xl font-bold mb-6">🛤️ Rutas ({routes.length})</h2>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {routes.map((route) => <RouteCard route={route} />)}
+              </div>
+            </section>
+          )}
+          
+          {restaurants.length > 0 && (
+            <section class="mb-12">
+              <h2 class="text-2xl font-bold mb-6">🍽️ Restaurantes ({restaurants.length})</h2>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {restaurants.map((restaurant) => <RestaurantCard restaurant={restaurant} />)}
+              </div>
+            </section>
+          )}
+          
+          {hotels.length > 0 && (
+            <section class="mb-12">
+              <h2 class="text-2xl font-bold mb-6">🏨 Alojamientos ({hotels.length})</h2>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {hotels.map((hotel) => <HotelCard hotel={hotel} />)}
+              </div>
+            </section>
+          )}
+        </div>
+      )}
+    </div>
+  </main>
+  
+  <Footer />
+</Layout>

@@ -1,0 +1,88 @@
+---
+import { urlFor } from '@/lib/sanity';
+
+interface Props {
+  route: {
+    _id: string;
+    title: string;
+    slug: { current: string };
+    mainImage?: any;
+    distance?: number;
+    difficulty?: 'easy' | 'medium' | 'hard' | 'expert';
+    mapEmbed?: string;
+  };
+}
+
+const { route } = Astro.props;
+
+const difficultyConfig: Record<string, { label: string; emoji: string; bg: string; text: string }> = {
+  easy: { label: 'Fácil', emoji: '🟢', bg: 'bg-emerald-100', text: 'text-emerald-700' },
+  facil: { label: 'Fácil', emoji: '🟢', bg: 'bg-emerald-100', text: 'text-emerald-700' },
+  medium: { label: 'Media', emoji: '🟡', bg: 'bg-amber-100', text: 'text-amber-700' },
+  moderada: { label: 'Moderada', emoji: '🟡', bg: 'bg-amber-100', text: 'text-amber-700' },
+  hard: { label: 'Difícil', emoji: '🟠', bg: 'bg-orange-100', text: 'text-orange-700' },
+  dificil: { label: 'Difícil', emoji: '🟠', bg: 'bg-orange-100', text: 'text-orange-700' },
+  expert: { label: 'Experto', emoji: '🔴', bg: 'bg-red-100', text: 'text-red-700' },
+};
+
+const defaultDiff = { label: 'Ruta', emoji: '🚴', bg: 'bg-slate-100', text: 'text-slate-700' };
+const diffKey = typeof route.difficulty === 'string' ? route.difficulty.toLowerCase() : '';
+const diff = difficultyConfig[diffKey] || defaultDiff;
+---
+
+<article class="group bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-300">
+  <!-- Imagen o Mapa -->
+  <a href={`/rutas/${route.slug.current}`} class="block relative aspect-[16/10] overflow-hidden bg-slate-100">
+    {route.mainImage ? (
+      <img 
+        src={urlFor(route.mainImage).width(600).height(375).url()} 
+        alt={route.title}
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        loading="lazy"
+      />
+    ) : (
+      <div class="w-full h-full bg-gradient-to-br from-emerald-100 to-sky-100 flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-emerald-400" fill="currentColor" viewBox="0 0 256 256">
+          <path d="M228.92,49.69a8,8,0,0,0-6.86-1.45L160.93,63.52,99.58,32.84a8,8,0,0,0-5.52-.6l-64,16A8,8,0,0,0,24,56V200a8,8,0,0,0,9.94,7.76l61.13-15.28,61.35,30.68A8.15,8.15,0,0,0,160,224a8,8,0,0,0,1.94-.24l64-16A8,8,0,0,0,232,200V56A8,8,0,0,0,228.92,49.69Z"/>
+        </svg>
+      </div>
+    )}
+    
+    <!-- Gradient overlay -->
+    <div class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+  </a>
+  
+  <!-- Contenido -->
+  <div class="p-5">
+    <a href={`/rutas/${route.slug.current}`} class="block">
+      <h3 class="text-lg font-semibold text-slate-900 group-hover:text-primary-600 transition-colors line-clamp-2">
+        {route.title}
+      </h3>
+    </a>
+    
+    <div class="flex items-center justify-between mt-4">
+      {route.distance && (
+        <span class="flex items-center gap-2 text-slate-500 text-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+          </svg>
+          {route.distance} km
+        </span>
+      )}
+      
+      <span class={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium ${diff.bg} ${diff.text}`}>
+        {diff.emoji} {diff.label}
+      </span>
+    </div>
+    
+    <a 
+      href={`/rutas/${route.slug.current}`}
+      class="mt-4 flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-slate-100 hover:bg-primary-500 text-slate-700 hover:text-white rounded-xl text-sm font-medium transition-all duration-200"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+      </svg>
+      Ver ruta
+    </a>
+  </div>
+</article>

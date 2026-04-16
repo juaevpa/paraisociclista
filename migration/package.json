@@ -1,0 +1,13 @@
+{
+  "name": "paraiso-migration",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Script de migración de WordPress a Sanity",
+  "scripts": {
+    "migrate": "node import-to-sanity.mjs"
+  },
+  "dependencies": {
+    "@sanity/client": "^6.12.0",
+    "jsdom": "^24.0.0"
+  }
+}

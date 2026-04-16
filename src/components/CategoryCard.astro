@@ -1,0 +1,47 @@
+---
+import { urlFor } from '@/lib/sanity';
+
+interface Props {
+  category: {
+    _id: string;
+    title: string;
+    slug: { current: string };
+    description?: string;
+    image?: any;
+  };
+}
+
+const { category } = Astro.props;
+---
+
+<a href={`/explorar/${category.slug.current}`} class="group flex flex-col gap-3">
+  <div class="relative aspect-video rounded-xl overflow-hidden bg-slate-100">
+    {category.image ? (
+      <img 
+        src={urlFor(category.image).width(400).height(225).url()} 
+        alt={category.title}
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        loading="lazy"
+      />
+    ) : (
+      <div class="w-full h-full bg-gradient-to-br from-sky-100 to-emerald-100 flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-sky-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      </div>
+    )}
+  </div>
+  
+  <div>
+    <h3 class="text-base font-medium text-slate-900 group-hover:text-primary-600 transition-colors">
+      {category.title}
+    </h3>
+    
+    {category.description && (
+      <p class="text-slate-500 text-sm mt-1 line-clamp-2">
+        {category.description}
+      </p>
+    )}
+  </div>
+</a>
