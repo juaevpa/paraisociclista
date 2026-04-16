@@ -118,7 +118,7 @@ export const queries = {
     distance, elevation, duration,
     difficulty->{ title, slug, color, description },
     routeType->{ title, slug, icon, description },
-    featured, gpxFile, mapEmbed, startPoint, endPoint
+    featured, gpxFile, mapEmbed
   }`,
 
   // Restaurantes

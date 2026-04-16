@@ -75,16 +75,6 @@ export default defineType({
       rows: 4,
     }),
     defineField({
-      name: 'startPoint',
-      title: 'Punto de inicio',
-      type: 'geopoint',
-    }),
-    defineField({
-      name: 'endPoint',
-      title: 'Punto final',
-      type: 'geopoint',
-    }),
-    defineField({
       name: 'featured',
       title: '¿Destacada?',
       type: 'boolean',
