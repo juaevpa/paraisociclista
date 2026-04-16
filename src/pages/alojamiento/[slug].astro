@@ -3,6 +3,7 @@ import Layout from '@/layouts/Layout.astro';
 import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
 import { sanityClient, queries, urlFor } from '@/lib/sanity';
+import { fixPortableText } from '@/lib/fixPortableText';
 import { toHTML } from '@portabletext/to-html';
 
 export async function getStaticPaths() {
@@ -84,10 +85,8 @@ const amenityLabels: Record<string, string> = {
               )}
             </div>
             
-            {hotel.description && (
-              <div class="prose prose-slate max-w-none" set:html={hotel.description ? toHTML(hotel.description) : ''}>
-              </div>
-            )}
+            <div class="prose prose-slate max-w-none" set:html={hotel.description ? toHTML(fixPortableText(hotel.description)) : '<p class="text-slate-500 italic">Descripción no disponible.</p>'}>
+            </div>
             
             {hotel.amenities && hotel.amenities.length > 0 && (
               <div class="mt-8">

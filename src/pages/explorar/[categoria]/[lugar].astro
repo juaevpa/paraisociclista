@@ -1,0 +1,292 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import { sanityClient, urlFor } from '@/lib/sanity';
+import { fixPortableText } from '@/lib/fixPortableText';
+import { toHTML } from '@portabletext/to-html';
+
+export async function getStaticPaths() {
+  const places = await sanityClient.fetch(`*[_type == "explorePlace"]{
+    "placeSlug": slug.current,
+    "categorySlug": category->slug.current
+  }`);
+  return places
+    .filter((p: any) => p.categorySlug && p.placeSlug)
+    .map((p: any) => ({
+      params: { categoria: p.categorySlug, lugar: p.placeSlug },
+    }));
+}
+
+const { categoria, lugar } = Astro.params;
+
+const place = await sanityClient.fetch(
+  `*[_type == "explorePlace" && slug.current == $lugar && category->slug.current == $categoria][0] {
+    _id, title, slug, mainImage, description, excerpt, address, location,
+    historicalPeriod, gallery,
+    category->{ _id, title, slug }
+  }`,
+  { categoria, lugar }
+);
+
+if (!place) return Astro.redirect('/404');
+
+const relatedPlaces = await sanityClient.fetch(
+  `*[_type == "explorePlace" && category->slug.current == $categoria && slug.current != $lugar][0...3] {
+    _id, title, slug, mainImage
+  }`,
+  { categoria, lugar: place.slug.current }
+);
+---
+
+<Layout title={place.title} description={place.excerpt || undefined}>
+  <Header />
+
+  <main class="flex-1 bg-white">
+    <!-- Hero -->
+    {place.mainImage ? (
+      <section class="relative w-full h-[55vh] min-h-[380px] max-h-[560px] overflow-hidden">
+        <img
+          src={urlFor(place.mainImage).width(1920).height(1080).url()}
+          alt={place.title}
+          class="absolute inset-0 w-full h-full object-cover"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent"></div>
+        <div class="absolute inset-0 flex items-end">
+          <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 w-full">
+            <nav class="mb-5">
+              <ol class="flex items-center gap-2 text-sm text-white/80 flex-wrap">
+                <li><a href="/" class="hover:text-white transition-colors">Inicio</a></li>
+                <li class="opacity-60">/</li>
+                <li><a href="/explorar" class="hover:text-white transition-colors">Explorar</a></li>
+                <li class="opacity-60">/</li>
+                <li><a href={`/explorar/${categoria}`} class="hover:text-white transition-colors">{place.category?.title || categoria}</a></li>
+              </ol>
+            </nav>
+            {place.historicalPeriod && (
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-white text-xs font-semibold uppercase tracking-wider mb-4">
+                🏛️ {place.historicalPeriod}
+              </div>
+            )}
+            <h1 class="text-3xl md:text-5xl font-black text-white leading-[1.1] drop-shadow-2xl">
+              {place.title}
+            </h1>
+          </div>
+        </div>
+      </section>
+    ) : (
+      <section class="relative bg-gradient-to-br from-sky-600 via-teal-600 to-emerald-700 py-24 overflow-hidden">
+        <div class="absolute inset-0 opacity-10" style="background-image:radial-gradient(circle at 20% 50%, white 1px, transparent 1px), radial-gradient(circle at 80% 80%, white 1px, transparent 1px);background-size:32px 32px;"></div>
+        <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <nav class="mb-5">
+            <ol class="flex items-center gap-2 text-sm text-white/80 flex-wrap">
+              <li><a href="/" class="hover:text-white transition-colors">Inicio</a></li>
+              <li class="opacity-60">/</li>
+              <li><a href="/explorar" class="hover:text-white transition-colors">Explorar</a></li>
+              <li class="opacity-60">/</li>
+              <li><a href={`/explorar/${categoria}`} class="hover:text-white transition-colors">{place.category?.title || categoria}</a></li>
+            </ol>
+          </nav>
+          <h1 class="text-4xl md:text-5xl font-black text-white leading-[1.1] drop-shadow-lg">
+            {place.title}
+          </h1>
+        </div>
+      </section>
+    )}
+
+    <!-- Contenido -->
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Columna principal -->
+        <article class="lg:col-span-2 space-y-8">
+          {place.excerpt && (
+            <p class="text-lg md:text-xl text-slate-600 leading-relaxed italic border-l-4 border-emerald-500 pl-5">
+              {place.excerpt}
+            </p>
+          )}
+
+          <div
+            class="place-content"
+            set:html={place.description ? toHTML(fixPortableText(place.description)) : '<p class="text-slate-500 italic">Descripción no disponible.</p>'}
+          ></div>
+
+          <!-- Galería -->
+          {place.gallery && place.gallery.length > 0 && (
+            <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100">
+              <h2 class="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+                🖼️ Galería
+              </h2>
+              <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {place.gallery.map((img: any) => (
+                  <div class="aspect-square rounded-xl overflow-hidden">
+                    <img
+                      src={urlFor(img).width(500).height(500).url()}
+                      alt={place.title}
+                      class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                      loading="lazy"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </article>
+
+        <!-- Sidebar -->
+        <aside class="space-y-6">
+          <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 sticky top-24">
+            <h3 class="text-lg font-bold text-slate-900 mb-6">Información</h3>
+
+            <div class="space-y-5">
+              {place.address && (
+                <div class="flex items-start gap-3">
+                  <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-sky-100 flex items-center justify-center">
+                    <span class="text-xl">📍</span>
+                  </div>
+                  <div>
+                    <p class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Dirección</p>
+                    <p class="text-sm text-slate-900 font-medium leading-snug">{place.address}</p>
+                  </div>
+                </div>
+              )}
+
+              {place.historicalPeriod && (
+                <div class="flex items-start gap-3">
+                  <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center">
+                    <span class="text-xl">🏛️</span>
+                  </div>
+                  <div>
+                    <p class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Período</p>
+                    <p class="text-sm text-slate-900 font-medium">{place.historicalPeriod}</p>
+                  </div>
+                </div>
+              )}
+
+              {place.category && (
+                <div class="flex items-start gap-3">
+                  <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center">
+                    <span class="text-xl">🗂️</span>
+                  </div>
+                  <div>
+                    <p class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Categoría</p>
+                    <a href={`/explorar/${place.category.slug?.current || categoria}`} class="text-sm text-emerald-700 hover:text-emerald-900 font-semibold">
+                      {place.category.title}
+                    </a>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {place.location && (
+              <>
+                <hr class="my-6 border-slate-100" />
+                <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${place.location.lat},${place.location.lng}`}
+                  target="_blank"
+                  rel="noopener"
+                  class="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-semibold rounded-xl shadow hover:shadow-lg transition-all text-sm"
+                >
+                  🗺️ Ver en Google Maps
+                </a>
+              </>
+            )}
+          </div>
+        </aside>
+      </div>
+
+      <!-- Relacionados -->
+      {relatedPlaces.length > 0 && (
+        <section class="mt-16 pt-10 border-t border-slate-200">
+          <h2 class="text-2xl font-black text-slate-900 mb-6">Más en {place.category?.title || 'esta categoría'}</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {relatedPlaces.map((rp: any) => (
+              <a
+                href={`/explorar/${categoria}/${rp.slug.current}`}
+                class="group bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all"
+              >
+                <div class="aspect-video overflow-hidden bg-slate-100">
+                  {rp.mainImage ? (
+                    <img
+                      src={urlFor(rp.mainImage).width(600).height(338).url()}
+                      alt={rp.title}
+                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div class="w-full h-full bg-gradient-to-br from-sky-100 to-teal-100 flex items-center justify-center">
+                      <span class="text-4xl">📍</span>
+                    </div>
+                  )}
+                </div>
+                <div class="p-4">
+                  <h3 class="font-bold text-slate-900 group-hover:text-primary-600 transition-colors line-clamp-2">
+                    {rp.title}
+                  </h3>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  .place-content {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: #334155;
+  }
+  .place-content > * + * { margin-top: 1.25rem; }
+  .place-content p { font-weight: 400; color: #334155; }
+  .place-content p strong { font-weight: 400; color: inherit; }
+  .place-content a {
+    color: #0284c7;
+    text-decoration: underline;
+    text-decoration-color: rgba(2, 132, 199, 0.35);
+    text-underline-offset: 3px;
+    font-weight: 500;
+  }
+  .place-content a:hover { color: #0369a1; }
+  .place-content h1, .place-content h2, .place-content h3,
+  .place-content h4, .place-content h5, .place-content h6 {
+    color: #0f172a;
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    line-height: 1.25;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  .place-content h2 { font-size: 1.75rem; }
+  .place-content h3 { font-size: 1.375rem; }
+  .place-content h4 { font-size: 1.125rem; }
+  .place-content ul, .place-content ol {
+    padding: 1rem 1.75rem 1rem 2.25rem;
+    margin: 1.25rem 0;
+    background: #f8fafc;
+    border-left: 3px solid #10b981;
+    border-radius: 0 0.5rem 0.5rem 0;
+  }
+  .place-content ul { list-style: disc; }
+  .place-content ol { list-style: decimal; }
+  .place-content li { margin: 0.5rem 0; }
+  .place-content li::marker { color: #10b981; font-weight: 700; }
+  .place-content blockquote {
+    border-left: 4px solid #10b981;
+    background: #ecfdf5;
+    padding: 1rem 1.5rem;
+    border-radius: 0 0.5rem 0.5rem 0;
+    font-style: italic;
+    margin: 1.5rem 0;
+  }
+  .place-content img {
+    border-radius: 1rem;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    margin: 2rem 0;
+    max-width: 100%;
+    height: auto;
+  }
+</style>

@@ -3,6 +3,7 @@ import Layout from '@/layouts/Layout.astro';
 import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
 import { sanityClient, queries, urlFor } from '@/lib/sanity';
+import { fixPortableText } from '@/lib/fixPortableText';
 import { toHTML } from '@portabletext/to-html';
 
 export async function getStaticPaths() {
@@ -99,7 +100,7 @@ const diff = route.difficulty
             <h2 class="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
               📍 Descripción de la Ruta
             </h2>
-            <div class="prose prose-slate max-w-none" set:html={route.description ? toHTML(route.description) : '<p>Descripción no disponible</p>'}>
+            <div class="prose prose-slate max-w-none" set:html={route.description ? toHTML(fixPortableText(route.description)) : '<p class="text-slate-500 italic">Descripción no disponible.</p>'}>
             </div>
           </div>
 

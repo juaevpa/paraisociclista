@@ -106,11 +106,15 @@ export interface BlogPost {
 export const queries = {
   // Rutas
   allRoutes: `*[_type == "route"] | order(featured desc, _createdAt desc) {
-    _id, title, slug, mainImage, distance, difficulty, featured, routeType
+    _id, title, slug, mainImage, distance, featured,
+    difficulty->{ title, "slug": slug.current, color },
+    routeType->{ title, "slug": slug.current, icon }
   }`,
-  
+
   featuredRoutes: `*[_type == "route" && featured == true][0...3] {
-    _id, title, slug, mainImage, distance, difficulty, featured, mapEmbed
+    _id, title, slug, mainImage, distance, featured, mapEmbed,
+    difficulty->{ title, "slug": slug.current, color },
+    routeType->{ title, "slug": slug.current, icon }
   }`,
   
   routeBySlug: `*[_type == "route" && slug.current == $slug][0] {
@@ -166,7 +170,9 @@ export const queries = {
   // Home
   homeContent: `{
     "featuredRoutes": *[_type == "route" && featured == true][0...3] {
-      _id, title, slug, mainImage, distance, difficulty, mapEmbed
+      _id, title, slug, mainImage, distance, mapEmbed,
+      difficulty->{ title, "slug": slug.current, color },
+      routeType->{ title, "slug": slug.current, icon }
     },
     "latestRestaurants": *[_type == "restaurant"] | order(_createdAt desc)[0...3] {
       _id, title, slug, mainImage, rating

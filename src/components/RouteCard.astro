@@ -2,32 +2,26 @@
 import { urlFor } from '@/lib/sanity';
 
 interface Props {
-  route: {
-    _id: string;
-    title: string;
-    slug: { current: string };
-    mainImage?: any;
-    distance?: number;
-    difficulty?: 'easy' | 'medium' | 'hard' | 'expert';
-    mapEmbed?: string;
-  };
+  route: any;
 }
 
 const { route } = Astro.props;
 
-const difficultyConfig: Record<string, { label: string; emoji: string; bg: string; text: string }> = {
-  easy: { label: 'Fácil', emoji: '🟢', bg: 'bg-emerald-100', text: 'text-emerald-700' },
-  facil: { label: 'Fácil', emoji: '🟢', bg: 'bg-emerald-100', text: 'text-emerald-700' },
-  medium: { label: 'Media', emoji: '🟡', bg: 'bg-amber-100', text: 'text-amber-700' },
-  moderada: { label: 'Moderada', emoji: '🟡', bg: 'bg-amber-100', text: 'text-amber-700' },
-  hard: { label: 'Difícil', emoji: '🟠', bg: 'bg-orange-100', text: 'text-orange-700' },
-  dificil: { label: 'Difícil', emoji: '🟠', bg: 'bg-orange-100', text: 'text-orange-700' },
-  expert: { label: 'Experto', emoji: '🔴', bg: 'bg-red-100', text: 'text-red-700' },
+const colorStyles: Record<string, { emoji: string; bg: string; text: string }> = {
+  green:  { emoji: '🟢', bg: 'bg-emerald-100', text: 'text-emerald-700' },
+  yellow: { emoji: '🟡', bg: 'bg-amber-100',   text: 'text-amber-700'   },
+  orange: { emoji: '🟠', bg: 'bg-orange-100',  text: 'text-orange-700'  },
+  red:    { emoji: '🔴', bg: 'bg-red-100',     text: 'text-red-700'     },
 };
 
 const defaultDiff = { label: 'Ruta', emoji: '🚴', bg: 'bg-slate-100', text: 'text-slate-700' };
-const diffKey = typeof route.difficulty === 'string' ? route.difficulty.toLowerCase() : '';
-const diff = difficultyConfig[diffKey] || defaultDiff;
+
+const diff = route.difficulty && typeof route.difficulty === 'object'
+  ? {
+      label: route.difficulty.title || 'Ruta',
+      ...(colorStyles[route.difficulty.color] || { emoji: '🚴', bg: 'bg-slate-100', text: 'text-slate-700' }),
+    }
+  : defaultDiff;
 ---
 
 <article class="group bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-300">
