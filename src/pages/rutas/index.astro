@@ -37,17 +37,32 @@ const colorEmoji: Record<string, string> = {
 <Layout title="Rutas Ciclistas" description="Descubre las mejores rutas ciclistas en Xàtiva y sus alrededores">
   <Header />
 
-  <main class="flex-1">
-    <!-- Hero -->
-    <section class="relative py-16 md:py-24 overflow-hidden">
-      <div class="absolute inset-0 bg-gradient-to-br from-emerald-600 via-emerald-700 to-teal-800"></div>
-      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h1 class="text-4xl md:text-5xl font-black text-white">
-          Descubre las mejores rutas ciclistas en Xàtiva
-        </h1>
-        <p class="mt-4 text-lg text-white/80 max-w-2xl mx-auto">
-          Explora nuestra selección de rutas para todos los niveles
-        </p>
+  <main class="flex-1 bg-white">
+    <!-- Hero editorial -->
+    <section class="border-b border-stone-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+          <div class="lg:col-span-8">
+            <p class="text-[11px] uppercase tracking-[0.3em] font-semibold text-stone-500 mb-4">
+              Rutas · Xàtiva y comarca
+            </p>
+            <h1 class="font-serif text-5xl md:text-6xl lg:text-7xl font-light text-stone-900 leading-[1.02] tracking-tight">
+              Itinerarios<br />
+              <em class="italic font-normal">probados</em> y rodados
+            </h1>
+          </div>
+          <div class="lg:col-span-4 lg:pl-8 lg:border-l border-stone-200">
+            <p class="text-base md:text-lg text-stone-600 leading-relaxed">
+              Cada ruta de esta selección ha sido pedaleada, cronometrada y fotografiada.
+              Carretera, gravel y montaña desde un mismo punto de partida, con tracks GPX descargables y avituallamiento verificado.
+            </p>
+            <div class="mt-6 flex items-center gap-6 text-[11px] uppercase tracking-[0.2em] text-stone-500 font-semibold">
+              <span>{routes.length} rutas</span>
+              <span class="text-stone-300">·</span>
+              <span>Wikiloc · Komoot · Strava</span>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -144,8 +159,8 @@ const colorEmoji: Record<string, string> = {
 
       <!-- Grid de rutas -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredRoutes.map((route: any) => (
-          <RouteCard route={route} />
+        {filteredRoutes.map((route: any, i: number) => (
+          <RouteCard route={route} index={i} />
         ))}
       </div>
 

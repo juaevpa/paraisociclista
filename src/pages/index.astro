@@ -7,124 +7,182 @@ import PlaceCard from '@/components/PlaceCard.astro';
 import CategoryCard from '@/components/CategoryCard.astro';
 import { sanityClient, queries } from '@/lib/sanity';
 
-// Obtener contenido de la home
 const homeData = await sanityClient.fetch(queries.homeContent);
 ---
 
 <Layout title="Inicio">
   <Header />
-  
-  <main class="flex-1">
-    <!-- Hero Section -->
-    <section class="relative overflow-hidden">
-      <div class="absolute inset-0 bg-gradient-to-br from-emerald-900 via-emerald-800 to-sky-900"></div>
-      <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1541625602330-2277a4c46182?w=1920')] bg-cover bg-center opacity-30"></div>
-      
-      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
-        <div class="max-w-3xl">
-          <h1 class="text-4xl md:text-6xl font-black text-white leading-tight animate-fade-in">
-            Paraíso Ciclista
-          </h1>
-          <p class="mt-6 text-lg md:text-xl text-white/80 leading-relaxed animate-fade-in animation-delay-100">
-            Descubre las mejores rutas ciclistas en Xàtiva y sus alrededores. 
-            Explora la historia, gastronomía y naturaleza de nuestra región.
+
+  <main class="flex-1 bg-white">
+    <!-- HERO editorial: foto panorámica real de Xàtiva + tipografía serif -->
+    <section class="relative overflow-hidden bg-stone-900">
+      <img
+        src="/images/blog/xativa-panoramic.jpg"
+        alt="Vista panorámica de Xàtiva desde el castillo"
+        class="absolute inset-0 w-full h-full object-cover opacity-60"
+        fetchpriority="high"
+      />
+      <div class="absolute inset-0 bg-gradient-to-b from-stone-900/40 via-stone-900/20 to-stone-900/70"></div>
+
+      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-36 lg:py-44">
+        <div class="max-w-4xl">
+          <p class="text-[11px] uppercase tracking-[0.35em] font-semibold text-white/80 mb-6">
+            Cicloturismo en la Costera · Xàtiva
           </p>
-          
-          <!-- Buscador -->
-          <form action="/buscar" method="get" class="mt-8 animate-fade-in animation-delay-200">
-            <div class="flex rounded-2xl bg-white/10 backdrop-blur-lg p-2 border border-white/20">
-              <input 
-                type="search" 
-                name="q"
-                placeholder="Buscar rutas, restaurantes, lugares..."
-                class="flex-1 px-4 py-3 bg-transparent text-white placeholder-white/60 focus:outline-none"
-              />
-              <button 
-                type="submit"
-                class="px-6 py-3 bg-white text-emerald-700 font-semibold rounded-xl hover:bg-emerald-50 transition-colors"
-              >
-                Buscar
-              </button>
-            </div>
-          </form>
+          <h1 class="font-serif text-white font-light leading-[0.95] tracking-tight text-5xl md:text-7xl lg:text-[96px]">
+            Un paraíso<br />
+            <em class="italic font-normal">a golpe</em> de pedal
+          </h1>
+          <p class="mt-8 text-lg md:text-xl text-white/85 max-w-xl leading-relaxed">
+            Rutas probadas, consejos reales y la guía honesta de Xàtiva para quien rueda.
+            Entre la costa y la montaña, una tierra con tradición ciclista profunda.
+          </p>
+
+          <div class="mt-10 flex flex-wrap items-center gap-4">
+            <a
+              href="/rutas"
+              class="inline-flex items-center gap-3 px-6 py-3.5 bg-white text-stone-900 font-semibold text-sm uppercase tracking-wider hover:bg-stone-100 transition-colors"
+            >
+              Explorar rutas
+              <span aria-hidden="true">→</span>
+            </a>
+            <a
+              href="/sobre-nosotros"
+              class="inline-flex items-center gap-3 px-6 py-3.5 text-white font-semibold text-sm uppercase tracking-wider border border-white/40 hover:bg-white/10 transition-colors"
+            >
+              El proyecto
+            </a>
+          </div>
         </div>
       </div>
-      
-      <!-- Wave decoration -->
-      <div class="absolute bottom-0 left-0 right-0">
-        <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="#f8fafc"/>
-        </svg>
+
+      <!-- Meta-strip inferior -->
+      <div class="relative border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="grid grid-cols-2 md:grid-cols-4 divide-x divide-white/10">
+            <div class="py-5 md:py-6 px-2 md:px-6">
+              <div class="font-serif text-2xl md:text-3xl font-light text-white">300+</div>
+              <div class="mt-1 text-[10px] uppercase tracking-[0.2em] text-white/70">días de sol</div>
+            </div>
+            <div class="py-5 md:py-6 px-4 md:px-6">
+              <div class="font-serif text-2xl md:text-3xl font-light text-white">4</div>
+              <div class="mt-1 text-[10px] uppercase tracking-[0.2em] text-white/70">Comarcas</div>
+            </div>
+            <div class="py-5 md:py-6 px-4 md:px-6">
+              <div class="font-serif text-2xl md:text-3xl font-light text-white">1.800m</div>
+              <div class="mt-1 text-[10px] uppercase tracking-[0.2em] text-white/70">Desnivel máx.</div>
+            </div>
+            <div class="py-5 md:py-6 px-4 md:px-6">
+              <div class="font-serif text-2xl md:text-3xl font-light text-white">1591</div>
+              <div class="mt-1 text-[10px] uppercase tracking-[0.2em] text-white/70">Ribera nació aquí</div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
-    
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <!-- Rutas destacadas -->
-      <section class="mb-16">
-        <div class="flex items-center justify-between mb-6">
-          <h2 class="text-2xl font-bold text-slate-900">Rutas destacadas</h2>
-          <a href="/rutas" class="text-primary-600 hover:text-primary-700 font-medium text-sm flex items-center gap-1">
+
+    <!-- RUTAS DESTACADAS -->
+    <section class="border-b border-stone-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+        <div class="flex items-end justify-between flex-wrap gap-6 mb-12">
+          <div>
+            <p class="text-[11px] uppercase tracking-[0.3em] font-semibold text-stone-500 mb-3">
+              Selección · 01
+            </p>
+            <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl font-light text-stone-900 leading-tight tracking-tight max-w-3xl">
+              Rutas <em class="italic font-normal">destacadas</em>
+            </h2>
+            <p class="mt-4 text-stone-600 max-w-xl leading-relaxed">
+              Los itinerarios imprescindibles para empezar a conocer la comarca sobre dos ruedas.
+            </p>
+          </div>
+          <a
+            href="/rutas"
+            class="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.25em] font-semibold text-stone-900 hover:gap-4 transition-all"
+          >
             Ver todas
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            </svg>
+            <span aria-hidden="true">→</span>
           </a>
         </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {homeData.featuredRoutes?.map((route: any) => (
-            <RouteCard route={route} />
-          ))}
-        </div>
-        
-        {(!homeData.featuredRoutes || homeData.featuredRoutes.length === 0) && (
-          <div class="text-center py-12 text-slate-500">
-            No hay rutas destacadas todavía. ¡Añade contenido desde el panel de Sanity!
+
+        {homeData.featuredRoutes && homeData.featuredRoutes.length > 0 ? (
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {homeData.featuredRoutes.map((route: any, i: number) => (
+              <RouteCard route={route} index={i} />
+            ))}
+          </div>
+        ) : (
+          <div class="border border-dashed border-stone-300 py-16 text-center">
+            <p class="text-stone-500">Aún no hay rutas destacadas.</p>
           </div>
         )}
-      </section>
-      
-      <!-- Dónde comer y alojarse -->
-      <section class="mb-16">
-        <h2 class="text-2xl font-bold text-slate-900 mb-6">Dónde comer y alojarse</h2>
-        
+      </div>
+    </section>
+
+    <!-- DONDE COMER Y ALOJARSE -->
+    <section class="border-b border-stone-200 bg-stone-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+        <div class="mb-12">
+          <p class="text-[11px] uppercase tracking-[0.3em] font-semibold text-stone-500 mb-3">
+            Selección · 02
+          </p>
+          <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl font-light text-stone-900 leading-tight tracking-tight max-w-3xl">
+            Dónde comer<br />y <em class="italic font-normal">dormir</em>
+          </h2>
+          <p class="mt-4 text-stone-600 max-w-xl leading-relaxed">
+            Restaurantes con alma, obradores históricos y alojamientos bike-friendly para planificar tu estancia.
+          </p>
+        </div>
+
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {homeData.latestRestaurants?.map((restaurant: any) => (
-            <PlaceCard place={restaurant} type="restaurant" />
+          {homeData.latestRestaurants?.map((r: any) => (
+            <PlaceCard place={r} type="restaurant" />
           ))}
-          {homeData.latestHotels?.map((hotel: any) => (
-            <PlaceCard place={hotel} type="hotel" />
+          {homeData.latestHotels?.map((h: any) => (
+            <PlaceCard place={h} type="hotel" />
           ))}
         </div>
-        
-        <div class="flex justify-center gap-4 mt-8">
-          <a 
+
+        <div class="mt-10 flex flex-wrap items-center gap-3">
+          <a
             href="/restaurantes"
-            class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary-500 text-white font-medium rounded-xl hover:bg-primary-600 transition-colors"
+            class="inline-flex items-center gap-2 px-5 py-3 bg-stone-900 text-white text-xs uppercase tracking-[0.2em] font-semibold hover:bg-stone-800 transition-colors"
           >
-            🍽️ Ver restaurantes
+            Restaurantes <span aria-hidden="true">→</span>
           </a>
-          <a 
+          <a
             href="/alojamiento"
-            class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary-500 text-white font-medium rounded-xl hover:bg-primary-600 transition-colors"
+            class="inline-flex items-center gap-2 px-5 py-3 bg-white text-stone-900 border border-stone-300 text-xs uppercase tracking-[0.2em] font-semibold hover:bg-stone-100 transition-colors"
           >
-            🏨 Ver alojamientos
+            Alojamiento <span aria-hidden="true">→</span>
           </a>
         </div>
-      </section>
-      
-      <!-- Explorar Xàtiva -->
-      <section>
-        <h2 class="text-2xl font-bold text-slate-900 mb-6">Explora Xàtiva</h2>
-        
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {homeData.exploreCategories?.map((category: any) => (
-            <CategoryCard category={category} />
+      </div>
+    </section>
+
+    <!-- EXPLORAR XATIVA -->
+    <section>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+        <div class="mb-12">
+          <p class="text-[11px] uppercase tracking-[0.3em] font-semibold text-stone-500 mb-3">
+            Selección · 03
+          </p>
+          <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl font-light text-stone-900 leading-tight tracking-tight max-w-3xl">
+            Explora <em class="italic font-normal">Xàtiva</em>
+          </h2>
+          <p class="mt-4 text-stone-600 max-w-xl leading-relaxed">
+            Del castillo de los Borgia al retrato invertido de Felipe V, pasando por el arnadí y la moixavena: lo que hay que ver entre pedalada y pedalada.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {homeData.exploreCategories?.map((c: any) => (
+            <CategoryCard category={c} />
           ))}
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
   </main>
-  
+
   <Footer />
 </Layout>

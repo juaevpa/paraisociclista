@@ -31,6 +31,7 @@ export default {
       },
       fontFamily: {
         sans: ['Plus Jakarta Sans', 'Noto Sans', 'system-ui', 'sans-serif'],
+        serif: ['Fraunces', 'Georgia', 'serif'],
       },
     },
   },

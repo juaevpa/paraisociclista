@@ -106,13 +106,13 @@ export interface BlogPost {
 export const queries = {
   // Rutas
   allRoutes: `*[_type == "route"] | order(featured desc, _createdAt desc) {
-    _id, title, slug, mainImage, distance, featured,
+    _id, title, slug, excerpt, mainImage, distance, elevation, duration, featured,
     difficulty->{ title, "slug": slug.current, color },
     routeType->{ title, "slug": slug.current, icon }
   }`,
 
   featuredRoutes: `*[_type == "route" && featured == true][0...3] {
-    _id, title, slug, mainImage, distance, featured, mapEmbed,
+    _id, title, slug, excerpt, mainImage, distance, elevation, duration, featured, mapEmbed,
     difficulty->{ title, "slug": slug.current, color },
     routeType->{ title, "slug": slug.current, icon }
   }`,
@@ -170,7 +170,7 @@ export const queries = {
   // Home
   homeContent: `{
     "featuredRoutes": *[_type == "route" && featured == true][0...3] {
-      _id, title, slug, mainImage, distance, mapEmbed,
+      _id, title, slug, excerpt, mainImage, distance, elevation, duration, mapEmbed,
       difficulty->{ title, "slug": slug.current, color },
       routeType->{ title, "slug": slug.current, icon }
     },
