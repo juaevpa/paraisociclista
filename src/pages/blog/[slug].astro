@@ -21,60 +21,51 @@ const relatedPosts = await sanityClient.fetch(
   }`,
   { slug }
 );
+
+const heroImage = hasPostImage(post) ? getPostImage(post, 1920, 1080) : null;
 ---
 
 <Layout title={post.title}>
   <Header />
 
-  <main class="flex-1 bg-gradient-to-b from-white via-slate-50/50 to-white">
-    <!-- Hero con imagen full-width -->
-    {hasPostImage(post) ? (
-      <section class="relative w-full h-[60vh] min-h-[420px] max-h-[600px] overflow-hidden">
-        <img
-          src={getPostImage(post, 1920, 1080)}
-          alt={post.title}
-          class="absolute inset-0 w-full h-full object-cover"
-        />
-        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-
+  <main class="flex-1 bg-white">
+    <!-- Hero -->
+    {heroImage ? (
+      <section class="relative w-full h-[55vh] min-h-[380px] max-h-[560px] overflow-hidden">
+        <img src={heroImage} alt={post.title} class="absolute inset-0 w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent"></div>
         <div class="absolute inset-0 flex items-end">
-          <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 md:pb-16 w-full">
-            <nav class="mb-6">
+          <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 w-full">
+            <nav class="mb-5">
               <ol class="flex items-center gap-2 text-sm text-white/80">
-                <li><a href="/" class="hover:text-white">Inicio</a></li>
-                <li>/</li>
-                <li><a href="/blog" class="hover:text-white">Blog</a></li>
+                <li><a href="/" class="hover:text-white transition-colors">Inicio</a></li>
+                <li class="opacity-60">/</li>
+                <li><a href="/blog" class="hover:text-white transition-colors">Blog</a></li>
               </ol>
             </nav>
-            <h1 class="text-3xl md:text-5xl lg:text-6xl font-black text-white leading-tight drop-shadow-lg max-w-3xl">
+            <h1 class="text-3xl md:text-5xl font-black text-white leading-[1.1] drop-shadow-2xl">
               {post.title}
             </h1>
-            {post.author && (
-              <p class="mt-4 text-white/90 font-medium">
-                Por <span class="text-white">{post.author}</span>
-              </p>
-            )}
           </div>
         </div>
       </section>
     ) : (
-      <section class="bg-gradient-to-br from-emerald-600 to-sky-700 py-20">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <nav class="mb-6">
+      <section class="relative bg-gradient-to-br from-emerald-600 via-teal-600 to-sky-700 py-24 overflow-hidden">
+        <div class="absolute inset-0 opacity-10" style="background-image:radial-gradient(circle at 20% 50%, white 1px, transparent 1px), radial-gradient(circle at 80% 80%, white 1px, transparent 1px);background-size:32px 32px;"></div>
+        <div class="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <nav class="mb-5">
             <ol class="flex items-center gap-2 text-sm text-white/80">
-              <li><a href="/" class="hover:text-white">Inicio</a></li>
-              <li>/</li>
-              <li><a href="/blog" class="hover:text-white">Blog</a></li>
+              <li><a href="/" class="hover:text-white transition-colors">Inicio</a></li>
+              <li class="opacity-60">/</li>
+              <li><a href="/blog" class="hover:text-white transition-colors">Blog</a></li>
             </ol>
           </nav>
-          <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-white text-xs font-semibold uppercase tracking-wider mb-4">
+            🚴 Artículo
+          </div>
+          <h1 class="text-4xl md:text-5xl font-black text-white leading-[1.1] drop-shadow-lg">
             {post.title}
           </h1>
-          {post.author && (
-            <p class="mt-4 text-white/90 font-medium">
-              Por <span class="text-white">{post.author}</span>
-            </p>
-          )}
         </div>
       </section>
     )}
@@ -82,64 +73,20 @@ const relatedPosts = await sanityClient.fetch(
     <!-- Contenido -->
     <article class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
       {post.excerpt && (
-        <p class="text-xl md:text-2xl text-slate-600 leading-relaxed font-light mb-10 pb-10 border-b border-slate-200">
+        <p class="text-lg md:text-xl text-slate-600 leading-relaxed font-normal mb-10 pb-10 border-b border-slate-200 italic">
           {post.excerpt}
         </p>
       )}
 
-      <div
-        class="prose prose-lg prose-slate max-w-none
-          prose-headings:font-black prose-headings:text-slate-900 prose-headings:tracking-tight
-          prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-4
-          prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-3
-          prose-p:text-slate-700 prose-p:leading-relaxed
-          prose-a:text-primary-600 prose-a:no-underline hover:prose-a:underline prose-a:font-semibold
-          prose-strong:text-slate-900
-          prose-img:rounded-2xl prose-img:shadow-lg
-          prose-blockquote:border-l-4 prose-blockquote:border-primary-500 prose-blockquote:bg-primary-50 prose-blockquote:py-1 prose-blockquote:px-6 prose-blockquote:rounded-r-lg prose-blockquote:not-italic prose-blockquote:text-slate-700
-          prose-ul:list-disc prose-li:text-slate-700
-          prose-code:bg-slate-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:text-pink-600 prose-code:before:content-none prose-code:after:content-none"
-        set:html={post.content ? toHTML(post.content) : '<p>Contenido no disponible.</p>'}
-      ></div>
+      <div class="post-content" set:html={post.content ? toHTML(post.content) : '<p>Contenido no disponible.</p>'}></div>
 
-      <!-- Share / Back -->
-      <div class="mt-16 pt-8 border-t border-slate-200 flex items-center justify-between flex-wrap gap-4">
+      <div class="mt-16 pt-8 border-t border-slate-200">
         <a
           href="/blog"
           class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 font-semibold transition-colors"
         >
           ← Volver al blog
         </a>
-        <div class="flex items-center gap-2">
-          <span class="text-sm text-slate-500 mr-2">Compartir:</span>
-          <a
-            href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(`https://paraisociclista.com/blog/${post.slug.current}`)}`}
-            target="_blank"
-            rel="noopener"
-            class="w-10 h-10 rounded-full bg-slate-100 hover:bg-sky-100 hover:text-sky-600 flex items-center justify-center transition-colors"
-            aria-label="Compartir en Twitter"
-          >
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-          </a>
-          <a
-            href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://paraisociclista.com/blog/${post.slug.current}`)}`}
-            target="_blank"
-            rel="noopener"
-            class="w-10 h-10 rounded-full bg-slate-100 hover:bg-blue-100 hover:text-blue-600 flex items-center justify-center transition-colors"
-            aria-label="Compartir en Facebook"
-          >
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z"/></svg>
-          </a>
-          <a
-            href={`https://wa.me/?text=${encodeURIComponent(post.title + ' https://paraisociclista.com/blog/' + post.slug.current)}`}
-            target="_blank"
-            rel="noopener"
-            class="w-10 h-10 rounded-full bg-slate-100 hover:bg-emerald-100 hover:text-emerald-600 flex items-center justify-center transition-colors"
-            aria-label="Compartir en WhatsApp"
-          >
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.570-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-          </a>
-        </div>
       </div>
     </article>
 
@@ -154,7 +101,7 @@ const relatedPosts = await sanityClient.fetch(
                 href={`/blog/${rp.slug.current}`}
                 class="group bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all"
               >
-                <div class="aspect-video overflow-hidden bg-slate-100">
+                <div class="aspect-video overflow-hidden bg-gradient-to-br from-emerald-500 to-sky-600 flex items-center justify-center">
                   {hasPostImage(rp) ? (
                     <img
                       src={getPostImage(rp, 600, 338)}
@@ -163,9 +110,7 @@ const relatedPosts = await sanityClient.fetch(
                       loading="lazy"
                     />
                   ) : (
-                    <div class="w-full h-full bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
-                      <span class="text-4xl">📝</span>
-                    </div>
+                    <span class="text-5xl">🚴</span>
                   )}
                 </div>
                 <div class="p-5">
@@ -186,3 +131,150 @@ const relatedPosts = await sanityClient.fetch(
 
   <Footer />
 </Layout>
+
+<style>
+  /* Tipografía limpia para contenido migrado — neutraliza el bold-everywhere
+     y los links indebidos que arrastran los posts importados desde WordPress */
+  .post-content {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: #334155;
+  }
+
+  .post-content > * + * {
+    margin-top: 1.25rem;
+  }
+
+  /* Párrafos: fuerza peso normal aunque venga envuelto en <strong> */
+  .post-content p {
+    font-weight: 400;
+    color: #334155;
+  }
+  .post-content p strong {
+    font-weight: 400;
+    color: inherit;
+  }
+
+  /* Anula colores heredados de enlaces cuando envuelven bloques enteros */
+  .post-content p > a:only-child,
+  .post-content a {
+    color: #0284c7;
+    text-decoration: underline;
+    text-decoration-color: rgba(2, 132, 199, 0.35);
+    text-underline-offset: 3px;
+    font-weight: 500;
+  }
+  .post-content a:hover {
+    color: #0369a1;
+    text-decoration-color: currentColor;
+  }
+
+  /* Encabezados — todos los niveles con jerarquía clara */
+  .post-content h1,
+  .post-content h2,
+  .post-content h3,
+  .post-content h4,
+  .post-content h5,
+  .post-content h6 {
+    color: #0f172a;
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    line-height: 1.25;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .post-content h1 { font-size: 2.25rem; }
+  .post-content h2 { font-size: 1.875rem; }
+  .post-content h3 { font-size: 1.5rem; }
+  .post-content h4 { font-size: 1.25rem; }
+  .post-content h5 { font-size: 1.125rem; }
+  .post-content h6 { font-size: 1rem; text-transform: uppercase; letter-spacing: 0.05em; color: #475569; }
+
+  /* Primer encabezado sin margen superior */
+  .post-content > h1:first-child,
+  .post-content > h2:first-child,
+  .post-content > h3:first-child {
+    margin-top: 0;
+  }
+
+  /* Neutraliza bold en encabezados que vengan con strong anidado */
+  .post-content h1 strong,
+  .post-content h2 strong,
+  .post-content h3 strong,
+  .post-content h4 strong,
+  .post-content h5 strong,
+  .post-content h6 strong {
+    font-weight: inherit;
+    color: inherit;
+  }
+
+  /* Listas */
+  .post-content ul,
+  .post-content ol {
+    padding-left: 1.5rem;
+    margin: 1.25rem 0;
+  }
+  .post-content ul { list-style: disc; }
+  .post-content ol { list-style: decimal; }
+  .post-content li {
+    margin: 0.5rem 0;
+    color: #334155;
+  }
+  .post-content li::marker {
+    color: #10b981;
+  }
+  .post-content li strong {
+    font-weight: 600;
+    color: #0f172a;
+  }
+
+  /* Citas */
+  .post-content blockquote {
+    border-left: 4px solid #10b981;
+    background: #ecfdf5;
+    padding: 1rem 1.5rem;
+    border-radius: 0 0.5rem 0.5rem 0;
+    color: #334155;
+    font-style: italic;
+    margin: 1.5rem 0;
+  }
+
+  /* Imágenes */
+  .post-content img {
+    border-radius: 1rem;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    margin: 2rem 0;
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Código */
+  .post-content code {
+    background: #f1f5f9;
+    color: #db2777;
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    font-size: 0.875em;
+  }
+  .post-content pre {
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 1.25rem;
+    border-radius: 0.75rem;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+  .post-content pre code {
+    background: none;
+    color: inherit;
+    padding: 0;
+  }
+
+  /* Separadores */
+  .post-content hr {
+    border: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #cbd5e1, transparent);
+    margin: 2.5rem 0;
+  }
+</style>
