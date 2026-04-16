@@ -8,35 +8,46 @@ import { sanityClient, queries } from '@/lib/sanity';
 const categories = await sanityClient.fetch(queries.allExploreCategories);
 ---
 
-<Layout title="Explorar Xàtiva" description="Descubre los mejores lugares de Xàtiva">
+<Layout title="Explorar Xàtiva" description="Descubre los mejores lugares, historia, gastronomía y naturaleza de Xàtiva.">
   <Header />
-  
-  <main class="flex-1">
-    <section class="relative py-16 md:py-24 overflow-hidden">
-      <div class="absolute inset-0 bg-gradient-to-br from-sky-500 via-cyan-500 to-teal-500"></div>
-      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h1 class="text-4xl md:text-5xl font-black text-white">📍 Explora Xàtiva</h1>
-        <p class="mt-4 text-lg text-white/80 max-w-2xl mx-auto">
-          Descubre la historia, cultura y naturaleza de nuestra región
-        </p>
+
+  <main class="flex-1 bg-white">
+    <!-- Hero editorial -->
+    <section class="border-b border-stone-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+          <div class="lg:col-span-8">
+            <p class="text-[11px] uppercase tracking-[0.3em] font-semibold text-stone-500 mb-4">
+              Explorar · Xàtiva
+            </p>
+            <h1 class="font-serif text-5xl md:text-6xl lg:text-7xl font-light text-stone-900 leading-[1.02] tracking-tight">
+              Lo que hay que <em class="italic font-normal">ver</em><br />
+              entre pedalada y pedalada
+            </h1>
+          </div>
+          <div class="lg:col-span-4 lg:pl-8 lg:border-l border-stone-200">
+            <p class="text-base md:text-lg text-stone-600 leading-relaxed">
+              Del castillo de los Borgia al retrato invertido de Felipe V, pasando por el arnadí y la moixavena. Xàtiva es mucho más que un destino ciclista.
+            </p>
+          </div>
+        </div>
       </div>
     </section>
-    
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {categories.map((category: any) => (
           <CategoryCard category={category} />
         ))}
       </div>
-      
+
       {categories.length === 0 && (
-        <div class="text-center py-16">
-          <span class="text-6xl">📍</span>
-          <p class="mt-4 text-slate-500 text-lg">No hay categorías todavía.</p>
+        <div class="border border-dashed border-stone-300 py-16 text-center">
+          <p class="text-stone-500">No hay categorías todavía.</p>
         </div>
       )}
     </div>
   </main>
-  
+
   <Footer />
 </Layout>

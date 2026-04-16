@@ -15,38 +15,36 @@ interface Props {
 const { place, type } = Astro.props;
 
 const baseUrl = type === 'restaurant' ? '/restaurantes' : '/alojamiento';
-const icon = type === 'restaurant' ? '🍽️' : '🏨';
+const label = type === 'restaurant' ? 'Restaurante' : 'Alojamiento';
 ---
 
-<a href={`${baseUrl}/${place.slug.current}`} class="group flex flex-col gap-3">
-  <div class="relative aspect-video rounded-xl overflow-hidden bg-slate-100">
+<a href={`${baseUrl}/${place.slug.current}`} class="group flex flex-col">
+  <div class="relative aspect-square overflow-hidden bg-stone-100 mb-3">
     {place.mainImage ? (
-      <img 
-        src={urlFor(place.mainImage).width(400).height(225).url()} 
+      <img
+        src={urlFor(place.mainImage).width(500).height(500).url()}
         alt={place.title}
-        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        class="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-500"
         loading="lazy"
       />
     ) : (
-      <div class="w-full h-full bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
-        <span class="text-4xl">{icon}</span>
+      <div class="absolute inset-0 bg-stone-200 flex items-center justify-center">
+        <span class="font-serif text-3xl font-light text-stone-400">
+          {place.title.charAt(0)}
+        </span>
       </div>
     )}
-    
-    <!-- Hover overlay -->
-    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
-  </div>
-  
-  <div>
-    <h3 class="text-base font-medium text-slate-900 group-hover:text-primary-600 transition-colors line-clamp-1">
-      {type === 'hotel' && <span class="text-slate-400 mr-1">🛏️</span>}
-      {place.title}
-    </h3>
-    
     {place.rating && (
-      <p class="text-slate-500 text-sm mt-1">
-        {place.rating}/5 ⭐
-      </p>
+      <div class="absolute top-2 right-2 px-2 py-0.5 bg-white/90 backdrop-blur text-[10px] uppercase tracking-wider font-semibold text-stone-900">
+        {place.rating.toFixed(1)}
+      </div>
     )}
   </div>
+
+  <p class="text-[10px] uppercase tracking-[0.2em] font-semibold text-stone-500 mb-1">
+    {label}
+  </p>
+  <h3 class="text-sm font-semibold text-stone-900 leading-snug group-hover:text-stone-600 transition-colors line-clamp-2">
+    {place.title}
+  </h3>
 </a>
